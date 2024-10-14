@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creditor Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+ * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+margin-top: 50px;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        nav h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #menuButton {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .menu {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #333;
+            display: flex;
+            flex-direction: column;
+            padding-top: 100px;
+            transition: left 0.3s;
+            z-index: 999;
+        }
+
+        .menu a {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .menu a:hover {
+            background-color: #575757;
+        }
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.creditor-list {
+    background-color: transparent;
+    padding: 0px;
+    border: 0px solid #ddd;
+}
+
+.creditor {
+    padding: 10px;
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+}
+
+/* Modal (pop-up) styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 5px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button {
+    background-color:  #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.more-button {
+    float: right;
+    cursor: pointer;
+    font-size: 20px;
+    background: none;
+    border: none;
+    color: #888;
+    padding: 5px;
+}
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .menu {
+                width: 200px;
+            }
+
+            nav h1 {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu {
+                width: 150px;
+            }
+
+            nav h1 {
+                font-size: 1em;
+            }
+
+            .form-group button {
+                padding: 8px 16px;
+            }
+        }
+</style>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <h1>Rumwel Online</h1>
+        <button id="menuButton" style="width: 50px;">&#9776;</button>
+    </nav>
+
+    <!-- Sidebar Menu -->
+    <div id="menu" class="menu">
+        <a href="index.html">Home</a>
+    <a href="inv.html">Inventory</a>
+    <a href="ord.html">Orders</a>
+    <a href="stats.html">Statistics</a>
+    <a href="index.html#drawings">Drawings</a>
+    <a href="exp.html">Expenses</a>
+    <a href="deb.html">Debtors</a>
+    <a href="cred.html">Creditors</a>
+    <a href="inc.html">Incomes</a>
+    </div>
+
+    <div class="container">
+        <header></header>
+        <section class="add-creditor">
+            <h2>View Creditors</h2>
+            <div id="Vcreditors" class="creditor-list"></div>
+        </section>
+        <section class="add-creditor">
+            <h2>Add Creditor</h2>
+            <form id="creditorForm">
+                <label for="name">Name</label>
+                <input type="text" id="name" placeholder="Enter creditor name" required>
+
+                <label for="amount">Borrow the amount</label>
+                <input type="number" id="amount" placeholder="Enter amount" required>
+
+                <label for="date">Date of Borrowed</label>
+                <input type="date" id="date" required>
+
+                <button type="submit">Add</button>
+            </form>
+        </section>
+
+        <section class="pay-creditor">
+            <h2>Pay Creditor</h2>
+            <form id="payForm">
+                <label for="selectCreditor">Name</label>
+                <select id="selectCreditor" required></select>
+
+                <label for="payAmount">Amount</label>
+                <input type="number" id="payAmount" placeholder="Enter amount to pay" required>
+
+                <button type="submit">Pay</button>
+            </form>
+        </section>
+    </div>
+
+    <!-- Modal (Pop-up) structure -->
+    <div id="creditorModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="modalTitle"></h3>
+            <p id="modalBody"></p>
+            <button id="modalEdit" style="background: #F4F2F1; border-top: 1px solid black; border-radius: 0; color: #333; font-size: 15px;">Edit</button>
+            <button id="modalRemove" style="background: #F4F2F1; border-top: 1px solid black; border-radius: 0; color: #333; font-size: 15px; border-bottom: 1px solid black;">Remove</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('menuButton').addEventListener('click', function() {
+            const menu = document.getElementById('menu');
+            menu.style.left = menu.style.left === '0px' ? '-250px' : '0px';
+        });
+
+        // Initialize creditors array
+        let creditors = [];
+
+        // Load creditors from localStorage when the page loads
+        document.addEventListener("DOMContentLoaded", function() {
+            const storedCreditors = localStorage.getItem("creditors");
+            if (storedCreditors) {
+                creditors = JSON.parse(storedCreditors);
+                updateCreditors();
+                populateSelectOptions();
+            }
+        });
+
+        // Handle adding a new creditor
+        document.getElementById('creditorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const amount = parseFloat(document.getElementById('amount').value);
+            const date = new Date(document.getElementById('date').value).toLocaleDateString("en-US"); // Format the date
+
+            // Check if creditor already exists
+            const existingCreditor = creditors.find(creditor => creditor.name.toLowerCase() === name.toLowerCase());
+
+            if (existingCreditor) {
+                // Sum up the amounts and update the date
+                existingCreditor.amount += amount;
+                existingCreditor.date = date;
+                existingCreditor.creditHistory.push({ amount: amount, date: date });
+            } else {
+                // Create a new creditor object
+                const creditor = {
+                    name: name,
+                    amount: amount,
+                    date: date,
+                    creditHistory: [{ amount: amount, date: date }], // Initialize credit history
+                    paymentHistory: [] // Initialize payment history
+                };
+                creditors.push(creditor);
+            }
+
+            // Update localStorage
+            localStorage.setItem("creditors", JSON.stringify(creditors));
+
+            updateCreditors();
+            populateSelectOptions();
+
+            document.getElementById('creditorForm').reset();
+        });
+
+        // Handle paying a creditor
+        document.getElementById('payForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const creditorName = document.getElementById('selectCreditor').value;
+            const payAmount = parseFloat(document.getElementById('payAmount').value);
+
+            // Find the creditor in the array and update the amount
+            creditors.forEach(creditor => {
+                if (creditor.name === creditorName) {
+                    creditor.amount -= payAmount;
+                    const paymentDate = new Date().toLocaleDateString("en-US"); // Get current date
+                    creditor.paymentHistory.push({ amount: payAmount, date: paymentDate }); // Log payment
+                }
+            });
+
+            // Update localStorage for payments
+            localStorage.setItem("creditors", JSON.stringify(creditors));
+            const creditPayments = JSON.parse(localStorage.getItem("creditPayments")) || [];
+            creditPayments.push({ creditor: creditorName, amount: payAmount, date: new Date().toLocaleDateString("en-US") });
+            localStorage.setItem("creditPayments", JSON.stringify(creditPayments)); // Save credit payments
+
+            updateCreditors();
+
+            // Clear the payment form
+            document.getElementById('payForm').reset();
+        });
+
+        // Function to update the creditors list display
+        function updateCreditors() {
+            const creditorList = document.querySelector('.creditor-list');
+            creditorList.innerHTML = '';
+
+            creditors.forEach((creditor, index) => {
+                const creditorDiv = document.createElement('div');
+                creditorDiv.classList.add('creditor');
+                creditorDiv.innerHTML = `
+                    <button class="more-button" onclick="openModal(${index})" style="width: 50px;">•••</button>
+                    You are owing ${creditor.name} the sum of: K${creditor.amount.toFixed(2)}, commissioned on: ${creditor.date}
+                `;
+                creditorList.appendChild(creditorDiv);
+            });
+        }
+
+        // Function to populate select options in the 'pay creditor' form
+        function populateSelectOptions() {
+            const selectCreditor = document.getElementById('selectCreditor');
+            selectCreditor.innerHTML = '';
+
+            creditors.forEach(creditor => {
+                const option = document.createElement('option');
+                option.value = creditor.name;
+                option.text = creditor.name;
+                selectCreditor.appendChild(option);
+            });
+        }
+
+        // Modal functionality
+        let currentCreditorIndex = null;
+        const modal = document.getElementById('creditorModal');
+        const span = document.getElementsByClassName('close')[0];
+
+        function openModal(index) {
+            currentCreditorIndex = index;
+            modal.style.display = 'block';
+            const creditor = creditors[index];
+            document.getElementById('modalTitle').textContent = `Manage ${creditor.name}`;
+            document.getElementById('modalBody').textContent = `You Are Owing K${creditor.amount.toFixed(2)}, commissioned on ${creditor.date}`;
+
+            // Display credit history
+            let creditHistoryHTML = `<h4>Credit History:</h4><ul>`;
+            creditor.creditHistory.forEach(credit => {
+                creditHistoryHTML += `<li>K${credit.amount.toFixed(2)} on ${credit.date}</li>`;
+            });
+            creditHistoryHTML += `</ul>`;
+            
+            // Display payment history
+            let paymentHistoryHTML = `<h4>Payment History:</h4><ul>`;
+            creditor.paymentHistory.forEach(payment => {
+                paymentHistoryHTML += `<li>K${payment.amount.toFixed(2)} on ${payment.date}</li>`;
+            });
+            paymentHistoryHTML += `</ul>`;
+            
+            // Add history to modal body
+            document.getElementById('modalBody').innerHTML += creditHistoryHTML + paymentHistoryHTML;
+        }
+
+        span.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+        document.getElementById('modalEdit').addEventListener('click', function() {
+    const creditor = creditors[currentCreditorIndex];
+    const newAmount = prompt(`Edit amount for ${creditor.name}:`, creditor.amount);
+    if (newAmount !== null && !isNaN(newAmount)) {
+        creditor.amount = parseFloat(newAmount);
+        localStorage.setItem("creditors", JSON.stringify(creditors));
+        updateCreditors();
+        modal.style.display = 'none';
+    }
+});
+
+document.getElementById('modalRemove').addEventListener('click', function() {
+    creditors.splice(currentCreditorIndex, 1);
+    localStorage.setItem("creditors", JSON.stringify(creditors));
+    updateCreditors();
+    populateSelectOptions();
+    modal.style.display = 'none';
+});
+    </script>
+</body>
+</html>

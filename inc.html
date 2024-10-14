@@ -1,0 +1,415 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income View</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+}
+nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        nav h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #menuButton {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .menu {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #333;
+            display: flex;
+            flex-direction: column;
+            padding-top: 100px;
+            transition: left 0.3s;
+            z-index: 999;
+        }
+
+        .menu a {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .menu a:hover {
+            background-color: #575757;
+        }
+main {
+    margin-top: 80px;
+    padding: 20px;
+}
+
+h2 {
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+.capital-contributions, .debtors, .creditors {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+button {
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+div{
+border-radius: 10px;
+}
+        #month-navigation {
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            margin-bottom: 20px;
+            
+        }
+        #month-navigation button {
+            margin: 0 10px;
+        }
+
+ /* Responsive Design */
+ @media (max-width: 768px) {
+            .menu {
+                width: 200px;
+            }
+
+            nav h1 {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu {
+                width: 150px;
+            }
+
+            nav h1 {
+                font-size: 1em;
+            }
+
+            .form-group button {
+                padding: 8px 16px;
+            }
+        }
+</style>
+<nav>
+    <h1>Rumwell Online</h1>
+    <button id="menuButton">&#9776;</button>
+</nav>
+
+<!-- Sidebar Menu -->
+<div id="menu" class="menu">
+    <a href="index.html">Home</a>
+    <a href="inv.html">Inventory</a>
+    <a href="ord.html">Orders</a>
+    <a href="stats.html">Statistics</a>
+    <a href="index.html#drawings">Drawings</a>
+    <a href="exp.html">Expenses</a>
+    <a href="deb.html">Debtors</a>
+    <a href="cred.html">Creditors</a>
+    <a href="inc.html">Incomes</a>
+</div>
+
+
+    <main>
+       <div id="month-navigation">
+        <button onclick="changeMonth(-1)"><</button>
+        <h2 id="selected-month">Month</h2>
+        <button onclick="changeMonth(1)">></button>
+    </div>
+        <section class="income-section">
+            <h2>View Incomes</h2>
+            
+            <div class="capital-contributions">
+                <h3>Capital Contributions</h3>
+                 <div id="capital-contributions-list">Loading capital contributions...</div>
+        <div id="contribution-total">Total Capital Contributions: 0</div>
+
+                    <!-- Capital Contributions will be added here -->
+                </div>
+            </div>
+
+            <div class="debtors">
+                <h3>Debtors</h3>
+                 <div id="debtors-list">Loading debtors...</div>
+        <div id="debtor-total">Total Debtors Amount: 0</div>
+
+               
+
+                    <!-- Debtors will be added here from local storage -->
+                </div>
+            </div>
+
+            <div class="creditors">
+                <h3>Creditors</h3>
+               <div id="creditors-list">Loading creditors...</div>
+        <div id="creditor-total">Total Creditors Amount: 0</div>
+    </div>
+
+                    <!-- Creditors will be added here from local storage -->
+                </div>
+            </div>
+        </section>
+
+        <section class="contribute-section">
+            <h2>Contribute to Capital</h2>
+            <form id="contribute-form">
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount" required>
+
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+
+                <button type="submit">Add</button>
+            </form>
+        </section>
+    </main>
+
+    <script>
+
+let currentMonth = new Date().getMonth(); // Default to the current month (0-11)
+
+// Helper function to merge amounts of people with the same name
+function mergeByName(data) {
+    const mergedData = {};
+
+    data.forEach(item => {
+        if (mergedData[item.name]) {
+            // If the name already exists, add the amounts
+            mergedData[item.name] += parseFloat(item.amount);
+        } else {
+            // Otherwise, initialize with the current amount
+            mergedData[item.name] = parseFloat(item.amount);
+        }
+    });
+
+    // Convert the merged data back into an array of objects
+    return Object.keys(mergedData).map(name => ({
+        name: name,
+        amount: mergedData[name]
+    }));
+}
+
+function mergeByNamea(data) {
+    const mergedData = {};
+
+    data.forEach(item => {
+        if (mergedData[item.name]) {
+            // If the name already exists, add the amounts
+            mergedData[item.name] += parseFloat(item.amountPaid);
+        } else {
+            // Otherwise, initialize with the current amount
+            mergedData[item.name] = parseFloat(item.amountPaid);
+        }
+    });
+
+    // Convert the merged data back into an array of objects
+    return Object.keys(mergedData).map(name => ({
+        name: name,
+        amountPaid: mergedData[name]
+    }));
+}
+// Helper function to filter data by month
+function filterByMonth(data, month) {
+    return data.filter(item => new Date(item.date).getMonth() === month);
+}
+function filterByMontha(data, month) {
+    return data.filter(item => new Date(item.paymentDate).getMonth() === month);
+}
+// Function to load Debtors from local storage for the selected month
+function loadDebtors(month) {
+    const debtors = JSON.parse(localStorage.getItem('debtorPayments')) || [];
+    const mergedDebtors = mergeByNamea(filterByMontha(debtors, month));
+    const debtorsList = document.getElementById('debtors-list');
+    let totalAmount = 0;
+
+    debtorsList.innerHTML = ''; // Clear existing content
+
+    if (mergedDebtors.length === 0) {
+        debtorsList.innerHTML = 'No debtors found for this month.';
+    } else {
+        mergedDebtors.forEach(debtor => {
+            const debtorItem = document.createElement('div');
+            debtorItem.innerHTML = `Name: ${debtor.name}, Amount: ${debtor.amountPaid}`;
+             debtorsList.appendChild(debtorItem);
+            totalAmount += debtor.amountPaid; // Sum the total amount
+        });
+    }
+
+    // Display total amount
+    const debtorTotal = document.getElementById('debtor-total');
+    debtorTotal.innerHTML = `Total Debtors Amount: ${totalAmount}`;
+}
+
+// Function to load Creditors from local storage for the selected month
+function loadCreditors(month) {
+    const creditors = JSON.parse(localStorage.getItem('creditors')) || [];
+    const mergedCreditors = mergeByName(filterByMonth(creditors, month));
+    const creditorsList = document.getElementById('creditors-list');
+    let totalAmount = 0;
+
+    creditorsList.innerHTML = ''; // Clear existing content
+
+    if (mergedCreditors.length === 0) {
+        creditorsList.innerHTML = 'No creditors found for this month.';
+    } else {
+        mergedCreditors.forEach(creditor => {
+            const creditorItem = document.createElement('div');
+            creditorItem.innerHTML = `Name: ${creditor.name}, Amount: ${creditor.amount}`;
+            creditorsList.appendChild(creditorItem);
+            totalAmount += creditor.amount; // Sum the total amount
+        });
+    }
+
+    // Display total amount
+    const creditorTotal = document.getElementById('creditor-total');
+    creditorTotal.innerHTML = `Total Creditors Amount: ${totalAmount}`;
+}
+
+// Function to load Capital Contributions for the selected month
+function loadCapitalContributions(month) {
+    const contributions = JSON.parse(localStorage.getItem('contributions')) || [];
+    const filteredContributions = filterByMonth(contributions, month);
+    const contributionList = document.getElementById('capital-contributions-list');
+    let totalAmount = 0;
+
+    contributionList.innerHTML = ''; // Clear existing content
+
+    if (filteredContributions.length === 0) {
+        contributionList.innerHTML = 'No capital contributions found for this month.';
+    } else {
+        filteredContributions.forEach(contribution => {
+            const contributionItem = document.createElement('div');
+            contributionItem.innerHTML = `Date: ${contribution.date}, Amount: ${contribution.amount}`;
+            contributionList.appendChild(contributionItem);
+            totalAmount += parseFloat(contribution.amount); // Sum the total amount
+        });
+    }
+
+    // Display total amount
+    const contributionTotal = document.getElementById('contribution-total');
+    contributionTotal.innerHTML = `Total Capital Contributions: ${totalAmount}`;
+}
+
+// Function to handle form submission for contributing to capital
+// Function to handle form submission for contributing to capital
+document.getElementById('contribute-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const amount = document.getElementById('amount').value;
+    const date = document.getElementById('date').value;
+
+    // Format the date as MM/DD/YYYY
+    const formattedDate = new Date(date).toLocaleDateString('en-US');
+
+    // Add contribution to localStorage
+    const contributions = JSON.parse(localStorage.getItem('contributions')) || [];
+    contributions.push({ amount: amount, date: formattedDate });
+    localStorage.setItem('contributions', JSON.stringify(contributions));
+
+    // Reload the current month's data
+    loadCapitalContributions(currentMonth);
+
+    // Clear form
+    document.getElementById('amount').value = '';
+    document.getElementById('date').value = '';
+});
+
+// Function to display data for the selected month
+function displayDataForMonth(month) {
+    loadDebtors(month);
+    loadCreditors(month);
+    loadCapitalContributions(month);
+}
+
+// Function to handle Next and Previous month buttons
+function changeMonth(direction) {
+    currentMonth = (currentMonth + direction + 12) % 12; // Ensure the month cycles correctly
+    document.getElementById('selected-month').innerHTML = getMonthName(currentMonth);
+    displayDataForMonth(currentMonth);
+}
+
+// Function to get the month name
+function getMonthName(monthIndex) {
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    return months[monthIndex];
+}
+
+// Set initial display for the current month
+window.onload = function() {
+    document.getElementById('selected-month').innerHTML = getMonthName(currentMonth);
+    displayDataForMonth(currentMonth);
+};
+document.getElementById('menuButton').addEventListener('click', function() {
+            const menu = document.getElementById('menu');
+            menu.style.left = menu.style.left === '0px' ? '-250px' : '0px';
+        });
+</script>
+</body>
+</html>
+

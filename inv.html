@@ -1,0 +1,636 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <style>
+       /* General Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 5px;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+margin-top: 100px;
+            zoom: 0.7;
+            width: 100%;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+ nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        nav h1 {
+            margin: 0;
+            font-size: 50px;
+        }
+
+        #menuButton {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .menu {
+            position: fixed;
+            top: 0;
+            left: -350px;
+            width: 350px;
+            height: 100%;
+            background-color: #333;
+            display: flex;
+            flex-direction: column;
+            padding-top: 100px;
+            transition: left 0.3s;
+            z-index: 999;
+        }
+
+        .menu a { 
+font-size: 20px;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .menu a:hover {
+            background-color: #575757;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #003366;
+            margin: 20px 0 10px 0;
+        }
+
+        /* Inventory List Styles */
+        .inventory-list {
+            max-width: 100%;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table-container {
+            max-width: 100%;
+            margin-bottom: 20px;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px; /* Adjusted font size */
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #003366;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        /* Pagination Styles */
+        .pagination {
+            display: flex;
+            justify-content: left;
+            margin: 20px 0;
+        }
+
+        .pagination button {
+            font-size: 20px;
+            height: 35px;
+            padding: 3px 15px;
+            margin: 0 5px;
+            border: none;
+            background-color: transparent;
+            color: #333;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .pagination button:hover {
+            color: white;
+            background-color: #002244;
+        }
+
+        /* Form Styles */
+        #add-total-inventory-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        #add-total-inventory-form label {
+            font-weight: bold;
+            color: #003366;
+            margin-bottom: 5px;
+        }
+
+        #add-total-inventory-form input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        #add-total-inventory-form button {
+            padding: 10px;
+            background-color: #003366;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        #add-total-inventory-form button:hover {
+            background-color: #002244;
+        }
+
+        .mcs {
+            border-radius: 20px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+       /* Responsive Design */
+        @media (max-width: 768px) {
+            .menu {
+                width: 200px;
+            }
+
+            nav h1 {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu {
+                width: 150px;
+            }
+
+            nav h1 {
+                font-size: 1em;
+            }
+
+            .form-group button {
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>Rumwell Online</h1>
+        <button id="menuButton">&#9776;</button>
+    </nav>
+
+    <!-- Sidebar Menu -->
+    <div id="menu" class="menu">
+        <a href="index.html">Home</a>
+    <a href="inv.html">Inventory</a>
+    <a href="ord.html">Orders</a>
+    <a href="stats.html">Statistics</a>
+    <a href="index.html#drawings">Drawings</a>
+    <a href="exp.html">Expenses</a>
+    <a href="deb.html">Debtors</a>
+    <a href="cred.html">Creditors</a>
+    <a href="inc.html">Incomes</a>
+    </div>
+
+<div class="mcs">
+    <h2>Storage Inventory</h2>
+    <div class="pagination">
+        <button id="prev-storage-btn">◀︎</button>
+        <span id="storage-page-info">Page 1 of 1</span>
+        <button id="next-storage-btn">▶︎</button>
+    </div>
+    <div class="table-container">
+        <table id="storage-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Cost Price</th>
+                    <th>Selling Price</th>
+                    <th>By</th>
+                    <th>From</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="mcs">
+    <h2>Store Inventory</h2>
+    <div class="pagination">
+        <button id="prev-store-btn">◀︎</button>
+        <span id="store-page-info">Page 1 of 1</span>
+        <button id="next-store-btn">▶︎</button>
+    </div>
+    <div class="table-container">
+        <table id="store-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Selling Price</th>
+                    <th>Date Transferred</th>
+                    <th>Flag</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="mcs">
+    <h2>Total Store Inventory</h2>
+    <div class="pagination">
+        <button id="prev-total-store-btn">◀︎</button>
+        <span id="total-store-page-info">Page 1 of 1</span>
+        <button id="next-total-store-btn">▶︎</button>
+    </div>
+    <div class="table-container">
+        <table id="total-store-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Selling Price</th>
+                    <th>Worth</th>
+                    <th>Flag</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<h2>Add to Total Store Inventory</h2>
+<form id="add-total-inventory-form">
+    <label for="total-name">Name:</label>
+    <input type="text" id="total-name" required>
+    <label for="total-quantity">Quantity:</label>
+    <input type="number" id="total-quantity" required>
+    <label for="total-selling-price">Selling Price:</label>
+    <input type="number" step="0.01" id="total-selling-price" required>
+    <button type="submit">Add</button>
+</form>
+
+    <script>
+
+document.getElementById('menuButton').addEventListener('click', function() {
+            const menu = document.getElementById('menu');
+            menu.style.left = menu.style.left === '0px' ? '-250px' : '0px';
+        });
+        
+        // Assume storageItems, storeItems, totalStoreItems are defined and populated
+
+        const rowsPerPage = 10;
+        let currentStoragePage = 1;
+        let currentStorePage = 1;
+        let currentTotalStorePage = 1;
+
+        function renderStorageItems() {
+            // Your rendering logic for storage items
+        const storageTableBody = document.querySelector('#storage-table tbody');
+        storageTableBody.innerHTML = '';
+        const start = (currentStoragePage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const paginatedStorageItems = storageItems.slice(start, end);
+
+        paginatedStorageItems.forEach((item, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.name}</td>
+                <td>${item.quantity}</td>
+                <td>${item.costPrice}</td>
+                <td>${item.sellingPrice}</td>
+                <td>${item.by}</td>
+                <td>${item.from}</td>
+                <td><button onclick="promptTransfer(${start + index})">Transfer</button></td>
+            `;
+            storageTableBody.appendChild(row);
+        });
+
+        document.getElementById('prev-storage-btn').disabled = currentStoragePage === 1;
+        document.getElementById('next-storage-btn').disabled = end >= storageItems.length;
+        document.getElementById('storage-page-info').textContent = `Page ${currentStoragePage} of ${Math.ceil(storageItems.length / rowsPerPage)}`;
+
+        }
+
+        function renderStoreItems() {
+            const storeTableBody = document.querySelector('#store-table tbody');
+            storeTableBody.innerHTML = '';
+            const start = (currentStorePage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginatedStoreItems = storeItems.slice(start, end);
+
+            paginatedStoreItems.forEach((item, index) => {
+                const actions = item.flag === 'transferred' 
+                    ? `<button onclick="undoTransfer(${start + index})">Undo</button>` 
+                    : `<button onclick="editStoreItem(${start + index})">Edit</button>
+                       <button onclick="removeStoreItem(${start + index})">Remove</button>`;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.sellingPrice}</td>
+                    <td>${item.dateTransferred || ''}</td>
+                    <td>${item.flag}</td>
+                    <td>${actions}</td>
+                `;
+                storeTableBody.appendChild(row);
+            });
+
+            document.getElementById('prev-store-btn').disabled = currentStorePage === 1;
+            document.getElementById('next-store-btn').disabled = end >= storeItems.length;
+            document.getElementById('store-page-info').textContent = `Page ${currentStorePage} of ${Math.ceil(storeItems.length / rowsPerPage)}`;
+        }
+
+        function renderTotalStoreItems() {
+            const totalStoreTableBody = document.querySelector('#total-store-table tbody');
+            totalStoreTableBody.innerHTML = '';
+            const start = (currentTotalStorePage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginatedTotalStoreItems = totalStoreItems.slice(start, end);
+
+            paginatedTotalStoreItems.forEach(item => {
+                const worth = (item.quantity * item.sellingPrice).toFixed(2);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.sellingPrice}</td>
+                    <td>${worth}</td>
+                    <td>${item.flag}</td>
+                `;
+                totalStoreTableBody.appendChild(row);
+            });
+
+            document.getElementById('prev-total-store-btn').disabled = currentTotalStorePage === 1;
+            document.getElementById('next-total-store-btn').disabled = end >= totalStoreItems.length;
+            document.getElementById('total-store-page-info').textContent = `Page ${currentTotalStorePage} of ${Math.ceil(totalStoreItems.length / rowsPerPage)}`;
+        }
+
+        function promptTransfer(index) {
+            const item = storageItems[index]; 
+            const date = prompt(`When was ${item.name} sent to the?`, new Date().toLocaleDateString());
+            const quantity = prompt(`Transfer how many of ${item.name}?`, 0);
+            if (quantity !== null) {
+                const qty = parseInt(quantity);
+                if (qty > 0 && qty <= item.quantity) {
+                    item.quantity -= qty;
+                    const storeItem = { 
+                        name: item.name, 
+                        quantity: qty, 
+                        sellingPrice: item.sellingPrice, 
+                        dateTransferred: date, 
+                        flag: 'transferred' 
+                    };
+                    storeItems.push(storeItem);
+                    
+                    // Add or update in totalStoreItems
+                    const totalItem = totalStoreItems.find(total => total.name === item.name);
+                    if (totalItem) {
+                        totalItem.quantity += qty; // Merge quantities
+                    } else {
+                        totalStoreItems.push({ 
+                            name: item.name, 
+                            quantity: qty, 
+                            sellingPrice: item.sellingPrice, 
+                            dateTransferred: storeItem.dateTransferred, // Include date
+                            flag: 'transferred' 
+                        });
+                    }
+
+                    updateLocalStorage();
+                    renderStorageItems();
+                    renderStoreItems();
+                    renderTotalStoreItems();
+                    alert(`Transferred ${qty} of ${item.name} to store inventory.`);
+                } else {
+                    alert('Invalid quantity.');
+                }
+            }
+        }
+
+        function undoTransfer(index) {
+            const item = storeItems[index];
+            const existingItem = storageItems.find(storageItem => storageItem.name === item.name);
+            if (existingItem) {
+                existingItem.quantity += item.quantity; // Return quantity to storage
+            } else {
+                storageItems.push({ 
+                    name: item.name, 
+                    quantity: item.quantity, 
+                    costPrice: 0, 
+                    sellingPrice: item.sellingPrice, 
+                    by: 'System', 
+                    from: 'Store' 
+                });
+            }
+            // Remove from storeItems and totalStoreItems
+            storeItems.splice(index, 1);
+            totalStoreItems = totalStoreItems.filter(totalItem => totalItem.name !== item.name || totalItem.flag !== 'transferred');
+
+            updateLocalStorage();
+            renderStorageItems();
+            renderStoreItems();
+            renderTotalStoreItems();
+            alert(`Returned ${item.quantity} of ${item.name} to storage inventory.`);
+        }
+
+        function editStoreItem(index) {
+            const item = storeItems[index];
+            const newQuantity = prompt(`Edit quantity for ${item.name}:`, item.quantity);
+            const newSellingPrice = prompt(`Edit selling price for ${item.name}:`, item.sellingPrice);
+            if (newQuantity !== null && newSellingPrice !== null) {
+                const oldQuantity = item.quantity; // Store old quantity for updating total inventory
+                item.quantity = parseInt(newQuantity);
+                item.sellingPrice = parseFloat(newSellingPrice);
+                // Update totalStoreItems
+                const totalItem = totalStoreItems.find(total => total.name === item.name);
+                if (totalItem) {
+                    totalItem.quantity += (item.quantity - oldQuantity); // Adjust total quantity
+                    totalItem.sellingPrice = item.sellingPrice; // Update selling price
+                }
+
+                updateLocalStorage();
+                renderStoreItems();
+                renderTotalStoreItems();
+            }
+        }
+
+        function removeStoreItem(index) {
+            if (confirm('Are you sure you want to remove this item?')) {
+                const item = storeItems[index];
+                // Remove from storageItems if transferred
+                if (item.flag === 'transferred') {
+                    const existingItem = storageItems.find(storageItem => storageItem.name === item.name);
+                    if (existingItem) {
+                        existingItem.quantity += item.quantity; // Return quantity to storage
+                    } else {
+                        storageItems.push({ 
+                            name: item.name, 
+                            quantity: item.quantity, 
+                            costPrice: 0, 
+                            sellingPrice: item.sellingPrice, 
+                            by: 'System', 
+                            from: 'Store' 
+                        });
+                    }
+                }
+                // Remove from storeItems and totalStoreItems
+                storeItems.splice(index, 1);
+                totalStoreItems = totalStoreItems.filter(totalItem => totalItem.name !== item.name || totalItem.flag !== item.flag);
+                
+                updateLocalStorage();
+                renderStoreItems();
+                renderTotalStoreItems();
+            }
+        }
+
+        function updateLocalStorage() {
+            localStorage.setItem('inventory', JSON.stringify(storageItems));
+            localStorage.setItem('storeInventory', JSON.stringify(storeItems));
+            localStorage.setItem('storeInventoryNew', JSON.stringify(storeItems));
+            localStorage.setItem('totalStoreInventory', JSON.stringify(totalStoreItems));
+        }
+
+        document.getElementById('add-total-inventory-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('total-name').value;
+            const quantity = parseInt(document.getElementById('total-quantity').value);
+            const sellingPrice = parseFloat(document.getElementById('total-selling-price').value);
+            const datead = prompt(`add to which date?`, new Date().toLocaleDateString()); // Capture current date
+            const existingItem = totalStoreItems.find(item => item.name === name);
+
+            if (existingItem) {
+                existingItem.quantity += quantity; // Merge quantities
+                existingItem.sellingPrice = sellingPrice; // Update selling price
+                existingItem.dateTransferred = datead; // Update date
+            } else {
+                totalStoreItems.push({ name, quantity, sellingPrice, dateTransferred: datead, flag: 'added' });
+                const storeItem = { name, quantity, sellingPrice, dateTransferred: datead, flag: 'added' };
+                storeItems.push(storeItem); // Also add to storeItems
+            }
+
+            updateLocalStorage();
+            renderStoreItems();
+            renderTotalStoreItems();
+            this.reset();
+        });
+
+        document.getElementById('prev-storage-btn').addEventListener('click', () => {
+            if (currentStoragePage > 1) {
+                currentStoragePage--;
+                renderStorageItems();
+            }
+        });
+
+        document.getElementById('next-storage-btn').addEventListener('click', () => {
+            if (currentStoragePage < Math.ceil(storageItems.length / rowsPerPage)) {
+                currentStoragePage++;
+                renderStorageItems();
+            }
+        });
+
+        document.getElementById('prev-store-btn').addEventListener('click', () => {
+            if (currentStorePage > 1) {
+                currentStorePage--;
+                renderStoreItems();
+            }
+        });
+
+        document.getElementById('next-store-btn').addEventListener('click', () => {
+            if (currentStorePage < Math.ceil(storeItems.length / rowsPerPage)) {
+                currentStorePage++;
+                renderStoreItems();
+            }
+        });
+
+        document.getElementById('prev-total-store-btn').addEventListener('click', () => {
+            if (currentTotalStorePage > 1) {
+                currentTotalStorePage--;
+                renderTotalStoreItems();
+            }
+        });
+
+        document.getElementById('next-total-store-btn').addEventListener('click', () => {
+            if (currentTotalStorePage < Math.ceil(totalStoreItems.length / rowsPerPage)) {
+                currentTotalStorePage++;
+                renderTotalStoreItems();
+            }
+        });
+
+        // Initialize local storage data
+        storageItems = JSON.parse(localStorage.getItem('inventory')) || [];
+        storeItems = JSON.parse(localStorage.getItem('storeInventory')) || [];
+        
+        totalStoreItems = JSON.parse(localStorage.getItem('totalStoreInventory')) || [];
+        
+        // Initial rendering
+        renderStorageItems();
+        renderStoreItems();
+        renderTotalStoreItems();
+
+
+    </script>
+</body>
+<script src="script.js"></script>
+</html>
+

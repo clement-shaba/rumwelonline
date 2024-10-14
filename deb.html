@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debtor Management</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f4f8;
+  color: #333;
+}
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        nav h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #menuButton {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .menu {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #333;
+            display: flex;
+            flex-direction: column;
+            padding-top: 100px;
+            transition: left 0.3s;
+            z-index: 999;
+        }
+
+        .menu a {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .menu a:hover {
+            background-color: #575757;
+        }
+
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+  font-weight: bold;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.debtors-container {
+  margin-bottom: 20px;
+}
+
+.debtor-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fafafa;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.more-btn {
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popup-menu {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 20px;
+  display: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.popup-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border: none;
+  margin-bottom: 10px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.popup-btn:hover {
+  background-color: #e1e1e1;
+}
+
+.close-btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-size: 16px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+}
+
+.modal-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.btn-close {
+  background-color: #dc3545;
+}
+
+.btn-close:hover {
+  background-color: #c82333;
+}
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .menu {
+                width: 200px;
+            }
+
+            nav h1 {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu {
+                width: 150px;
+            }
+
+            nav h1 {
+                font-size: 1em;
+            }
+
+            .form-group button {
+                padding: 8px 16px;
+            }
+        }
+</style>
+
+
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <h1>Rumwell Online</h1>
+        <button id="menuButton">&#9776;</button>
+    </nav>
+
+    <!-- Sidebar Menu -->
+    <div id="menu" class="menu">
+      <a href="index.html">Home</a>
+      <a href="inv.html">Inventory</a>
+      <a href="ord.html">Orders</a>
+      <a href="stats.html">Statistics</a>
+      <a href="index.html#drawings">Drawings</a>
+      <a href="exp.html">Expenses</a>
+      <a href="deb.html">Debtors</a>
+      <a href="cred.html">Creditors</a>
+      <a href="inc.html">Incomes</a>
+    </div>
+  <div class="container" style="margin-top: 20%;">
+  
+    <div class="section">
+      <h2>View Debtors</h2>
+      <div class="pagination" style="width: 40%;">
+        <button id="prev-page" class="btn" onclick="prevPage()" style="background-color: transparent; color: black; font-size: 30px;">◀︎</button>
+        <span id="pagination-info" style="text-align: left;"></span>
+        <button id="next-page" class="btn" onclick="nextPage()" style="background-color: transparent; color: black; font-size: 30px;">▶︎</button>
+      </div>
+      <div id="debtors-container" class="debtors-container"></div>
+
+    </div>
+</div>
+  <div class="container">
+    <!-- Add Debtor Section -->
+    <div class="section" style="border-bottom: 3px solid black;">
+      <h2>Add Debtor</h2>
+      <label for="debtor-name">Name</label>
+      <input type="text" id="debtor-name" placeholder="Enter debtor's name">
+      <label for="debtor-amount">Amount Owing</label>
+      <input type="number" id="debtor-amount" placeholder="Enter amount owing">
+      <label for="debtor-date">Admission Date</label>
+      <input type="date" id="debtor-date">
+<br>
+      <button class="btn" onclick="addDebtor()" style=" width: 100%; margin-bottom: 2em;">Add Debtor</button>
+    </div>
+
+    <!-- Clear Debtor Section -->
+    <div class="section">
+      <h2>Clear Debtor</h2>
+      <label for="debtor-select">Name</label>
+      <select id="debtor-select">
+        <option value="Select">Select</option>
+      </select>
+      <label for="amount-paid">Amount Paid</label>
+      <input type="number" id="amount-paid" placeholder="Enter amount paid">
+      <button class="btn" onclick="clearDebtor()" style="width: 100%">Clear Debtor</button>
+    </div>
+
+    <!-- View Debtors Section -->
+
+    <!-- Popup Menu -->
+    <div id="popup-menu" class="popup-menu">
+      <button class="popup-btn close-btn" onclick="closePopupMenu()" style="width: 20px; color: red; ">X</button>
+      <button class="popup-btn" onclick="editDebtor()" style="margin-top: 40px;">Edit</button>
+      <button class="popup-btn" onclick="removeDebtor()">Remove</button>
+      <button class="popup-btn" onclick="viewPastPayments()">Payment Info</button>
+      <button class="popup-btn" onclick="viewDebtHistory()">Credit History</button>
+    </div>
+
+    <!-- Edit Debtor Modal -->
+    <div id="edit-debtor-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">Edit Debtor</div>
+        <label for="edit-name">Name</label>
+        <input type="text" id="edit-name">
+        <label for="edit-amount">Amount Owing</label>
+        <input type="number" id="edit-amount">
+        <label for="edit-date">Admission Date</label>
+        <input type="date" id="edit-date">
+        <button class="btn" onclick="saveEditDebtor()">Save</button>
+        <button class="btn btn-close" onclick="closeEditModal()">Close</button>
+      </div>
+    </div>
+
+<!-- Modal for viewing past payments -->
+<div id="payments-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closePaymentsModal()" style="font-size: 30px; float: right; color: red;">&times;</span>
+    <h2>Payment Info</h2>
+    <ul id="payments-list"></ul>
+  </div>
+</div>
+
+<!-- Modal for viewing debt history -->
+<div id="debt-history-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeDebtHistoryModal()"  style="font-size: 30px; float: right; color: red;">&times;</span>
+    <h2>Debt History</h2>
+    <ul id="debt-history-list"></ul>
+  </div>
+</div>
+
+  </div>
+
+ 
+
+  <script>
+document.getElementById('menuButton').addEventListener('click', function() {
+    const menu = document.getElementById('menu');
+    menu.style.left = menu.style.left === '0px' ? '-250px' : '0px';
+});
+
+let debtors = JSON.parse(localStorage.getItem('debtors')) || [];
+let currentPage = 1;
+const itemsPerPage = 5;
+let currentDebtor = '';
+
+// Load existing debtors from localStorage on page load
+document.addEventListener('DOMContentLoaded', () => {
+  updateDebtorList();
+});
+
+// Function to add a debtor
+// Function to add a debtor
+function addDebtor() {
+  const name = document.getElementById('debtor-name').value;
+  const amountOwing = parseFloat(document.getElementById('debtor-amount').value);
+  let admissionDate = document.getElementById('debtor-date').value;
+
+  if (name && amountOwing > 0 && admissionDate) {
+    // Format the date to MM/DD/YYYY
+    const dateParts = admissionDate.split('-');
+    admissionDate = `${dateParts[1]}/${dateParts[2]}/${dateParts[0]}`; // Convert to MM/DD/YYYY format
+
+    const existingDebtorIndex = debtors.findIndex(debtor => debtor.name === name);
+
+    if (existingDebtorIndex > -1) {
+      // If debtor exists, merge amounts and record new debt
+      debtors[existingDebtorIndex].amountOwing += amountOwing;
+      debtors[existingDebtorIndex].admissionDate = admissionDate; // Update admission date
+      debtors[existingDebtorIndex].debtHistory.push({ amount: amountOwing, date: admissionDate });
+    } else {
+      // Add new debtor with debt history
+      const debtor = { 
+        name, 
+        amountOwing, 
+        admissionDate, 
+        payments: [], 
+        debtHistory: [{ amount: amountOwing, date: admissionDate }] 
+      };
+      debtors.push(debtor);
+    }
+
+    localStorage.setItem('debtors', JSON.stringify(debtors));
+    updateDebtorList();
+    clearInputs();
+  } else {
+    alert('Please fill all fields correctly!');
+  }
+}
+
+
+// Function to update the debtor list
+function updateDebtorList() {
+  const selectElement = document.getElementById('debtor-select');
+  const debtorsContainer = document.getElementById('debtors-container');
+  const paginationInfo = document.getElementById('pagination-info');
+  const prevPageButton = document.getElementById('prev-page');
+  const nextPageButton = document.getElementById('next-page');
+
+  selectElement.innerHTML = '<option value="Select">Select</option>';
+  debtorsContainer.innerHTML = '';
+
+  // Pagination logic
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, debtors.length);
+  const paginatedDebtors = debtors.slice(startIndex, endIndex);
+
+  paginatedDebtors.forEach(debtor => {
+    const debtorCard = document.createElement('div');
+    debtorCard.className = 'debtor-card';
+    debtorCard.innerHTML = `
+      <span>${debtor.name} - $${debtor.amountOwing.toFixed(2)} (Admitted: ${debtor.admissionDate})</span>
+      <button class="more-btn" onclick="showPopupMenu('${debtor.name}')">•••</button>
+    `;
+    debtorsContainer.appendChild(debtorCard);
+
+    // Add debtor to select options
+    const option = document.createElement('option');
+    option.value = debtor.name;
+    option.textContent = debtor.name;
+    selectElement.appendChild(option);
+  });
+
+  paginationInfo.textContent = `Page ${currentPage} of ${Math.ceil(debtors.length / itemsPerPage)}`;
+
+  prevPageButton.style.display = currentPage === 1 ? 'none' : 'inline';
+  nextPageButton.style.display = endIndex >= debtors.length ? 'none' : 'inline';
+}
+
+// Pagination controls
+function prevPage() {
+  if (currentPage > 1) {
+    currentPage--;
+    updateDebtorList();
+  }
+}
+
+function nextPage() {
+  if (currentPage < Math.ceil(debtors.length / itemsPerPage)) {
+    currentPage++;
+    updateDebtorList();
+  }
+}
+
+// Function to clear debtor
+// Function to clear debtor
+function clearDebtor() {
+  const selectElement = document.getElementById('debtor-select');
+  const amountPaid = parseFloat(document.getElementById('amount-paid').value);
+  const debtorName = selectElement.value;
+
+  if (debtorName === "Select" || amountPaid <= 0) {
+    alert('Please select a debtor and enter a valid amount paid.');
+    return;
+  }
+
+  const debtorIndex = debtors.findIndex(debtor => debtor.name === debtorName);
+  if (debtorIndex > -1) {
+    const debtor = debtors[debtorIndex];
+    debtor.amountOwing -= amountPaid;
+    debtor.payments.push({ amount: amountPaid, date: new Date().toLocaleDateString() });
+
+    // Store payments in localStorage 'debtorPayments'
+    let debtorPayments = JSON.parse(localStorage.getItem('debtorPayments')) || [];
+
+    debtorPayments.push({
+      name: debtor.name,
+      amountPaid: amountPaid,
+      paymentDate: new Date().toLocaleDateString()
+    });
+
+    localStorage.setItem('debtorPayments', JSON.stringify(debtorPayments));
+
+    if (debtor.amountOwing < 0) {
+      debtor.amountOwing = 0; // Prevent negative amounts
+    }
+
+    localStorage.setItem('debtors', JSON.stringify(debtors));
+    updateDebtorList();
+    clearInputs();
+    alert(`${debtor.name}'s updated amount owing is $${debtor.amountOwing.toFixed(2)}`);
+  }
+}
+
+
+// Function to clear input fields
+function clearInputs() {
+  document.getElementById('debtor-name').value = '';
+  document.getElementById('debtor-amount').value = '';
+  document.getElementById('debtor-date').value = '';
+  document.getElementById('amount-paid').value = '';
+  document.getElementById('debtor-select').value = 'Select';
+}
+
+// Function to show popup menu
+function showPopupMenu(debtorName) {
+  currentDebtor = debtorName;
+  document.getElementById('popup-menu').style.display = 'block';
+}
+
+// Function to close popup menu
+function closePopupMenu() {
+  document.getElementById('popup-menu').style.display = 'none';
+}
+
+// Function to edit debtor
+function editDebtor() {
+  const debtor = debtors.find(d => d.name === currentDebtor);
+  if (debtor) {
+    document.getElementById('edit-name').value = debtor.name;
+    document.getElementById('edit-amount').value = debtor.amountOwing;
+    document.getElementById('edit-date').value = debtor.admissionDate;
+    document.getElementById('edit-debtor-modal').style.display = 'flex';
+  }
+}
+
+// Function to save edited debtor
+function saveEditDebtor() {
+  const editedName = document.getElementById('edit-name').value;
+  const editedAmount = parseFloat(document.getElementById('edit-amount').value);
+  const editedDate = document.getElementById('edit-date').value;
+
+  const debtorIndex = debtors.findIndex(debtor => debtor.name === currentDebtor);
+  if (debtorIndex > -1 && editedName && editedAmount >= 0 && editedDate) {
+    debtors[debtorIndex].name = editedName;
+    debtors[debtorIndex].amountOwing = editedAmount;
+    debtors[debtorIndex].admissionDate = editedDate;
+
+    localStorage.setItem('debtors', JSON.stringify(debtors));
+    updateDebtorList();
+    closeEditModal();
+  } else {
+    alert('Please fill all fields correctly.');
+  }
+}
+
+// Function to remove debtor
+function removeDebtor() {
+  debtors = debtors.filter(debtor => debtor.name !== currentDebtor);
+  localStorage.setItem('debtors', JSON.stringify(debtors));
+  updateDebtorList();
+  closePopupMenu();
+}
+
+// Function to view past payments
+function viewPastPayments() {
+  const debtor = debtors.find(d => d.name === currentDebtor);
+  if (debtor) {
+    const paymentsList = document.getElementById('payments-list');
+    paymentsList.innerHTML = '';
+
+    debtor.payments.forEach(payment => {
+      const li = document.createElement('li');
+      li.textContent = `$${payment.amount.toFixed(2)} paid on ${payment.date}`;
+      paymentsList.appendChild(li);
+    });
+
+    document.getElementById('payments-modal').style.display = 'flex';
+  }
+}
+
+// Function to view debt history
+function viewDebtHistory() {
+  const debtor = debtors.find(d => d.name === currentDebtor);
+  if (debtor) {
+    const debtHistoryList = document.getElementById('debt-history-list');
+    debtHistoryList.innerHTML = '';
+
+    debtor.debtHistory.forEach(debt => {
+      const li = document.createElement('li');
+      li.textContent = `$${debt.amount.toFixed(2)} incurred on ${debt.date}`;
+      debtHistoryList.appendChild(li);
+    });
+
+    document.getElementById('debt-history-modal').style.display = 'flex';
+  }
+}
+
+// Function to close modals
+function closeEditModal() {
+  document.getElementById('edit-debtor-modal').style.display = 'none';
+}
+
+function closePaymentsModal() {
+  document.getElementById('payments-modal').style.display = 'none';
+}
+
+function closeDebtHistoryModal() {
+  document.getElementById('debt-history-modal').style.display = 'none';
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Orders and Inventory</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+            color: white;
+            position: fixed; /* Fixed at the top */
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000; /* Ensures the nav is above other content */
+        }
+
+        nav h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #menuButton {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        #menuButton:focus {
+            outline: none;
+        }
+
+        .menu {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #333;
+            display: flex;
+            flex-direction: column;
+            padding-top: 100px;
+            transition: left 0.3s;
+            z-index: 999; /* Below the nav but above the rest of the content */
+        }
+
+        .menu a {
+font-size: 18px;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .menu a:hover {
+            background-color: #575757;
+        }
+
+        /* Content Section Styling */
+        #content {
+            margin-left: 0;
+            transition: margin-left 0.3s;
+            padding: 20px;
+            padding-top: 70px; /* Offset for fixed navbar */
+        }
+
+        /* Header */
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .menu-btn {
+            background-color: #002244;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .menu-btn:hover {
+            background-color: #001122;
+        }
+
+        /* Orders Section */
+        .orders-list {
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .order-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        h2 {
+            padding-top: 50px;
+            color: #003366;
+            margin-bottom: 20px;
+        }
+
+        /* Add Inventory Section */
+        .add-inventory {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .add-inventory label {
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .add-inventory input {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .add-inventory button {
+            padding: 10px 20px;
+            background-color: #003366;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .add-inventory button:hover {
+            background-color: #002244;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+
+            .menu-btn {
+                margin-top: 10px;
+            }
+
+            .orders-list {
+                padding: 10px;
+            }
+
+            .add-inventory {
+                padding: 15px;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .menu {
+                width: 200px;
+            }
+
+            nav h1 {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu {
+                width: 150px;
+            }
+
+            nav h1 {
+                font-size: 1em;
+            }
+
+            .form-group button {
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+   <nav>
+        <h1>Rumwell Online</h1>
+        <button id="menuButton">&#9776;</button> <!-- Hamburger menu icon -->
+    </nav>
+
+    <!-- Sidebar Menu -->
+    <div id="menu" class="menu">
+        <a href="index.html">Home</a>
+    <a href="inv.html">Inventory</a>
+    <a href="ord.html">Orders</a>
+    <a href="stats.html">Statistics</a>
+    <a href="index.html#drawings">Drawings</a>
+    <a href="exp.html">Expenses</a>
+    <a href="deb.html">Debtors</a>
+    <a href="cred.html">Creditors</a>
+    <a href="inc.html">Incomes</a>
+    </div>
+
+    <section class="orders-list">
+        <h2>Orders List</h2>
+        <div id="orders-container">
+            <!-- Orders will be inserted here -->
+        </div>
+    </section>
+
+    <section class="add-inventory">
+        <h2>Add Item</h2>
+        <form id="add-inventory-form">
+            <label for="add-name">Name:</label>
+            <input type="text" id="add-name" name="add-name" required>
+            <label for="add-quantity">Quantity:</label>
+            <input type="number" id="add-quantity" name="add-quantity" required>
+            <label for="add-by">By:</label>
+            <input type="text" id="add-by" name="add-by" required>
+            <label for="add-from">From:</label>
+            <input type="text" id="add-from" name="add-from" required>
+            <label for="add-cost-price">Cost Price:</label>
+            <input type="number" id="add-cost-price" name="add-cost-price" required>
+            <label for="add-selling-price">Selling Price:</label>
+            <input type="number" id="add-selling-price" name="add-selling-price" required>
+            <button type="button" onclick="addItem()">Add</button>
+        </form>
+    </section>
+
+    <script>
+        function displayOrders() {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const ordersContainer = document.getElementById('orders-container');
+            ordersContainer.innerHTML = '';  // Clear the existing orders
+
+            if (orders.length > 0) {
+                orders.forEach((order, index) => {
+                    const orderDiv = document.createElement('div');
+                    orderDiv.classList.add('order-item');
+                    orderDiv.innerHTML = `
+                        <strong>Product:</strong> ${order.name}<br>
+                        <strong>Quantity:</strong> ${order.quantity}<br>
+                        <strong>By:</strong> ${order.by}<br>
+                        <strong>From:</strong> ${order.from}<br>
+                        <strong>Cost Price:</strong> ${order.costPrice}<br>
+                        <strong>Selling Price:</strong> ${order.sellingPrice}<br>
+                        <strong>Date Added:</strong> ${new Date(order.dateAdded).toLocaleDateString()}<br>
+                        <button onclick="removeOrder(${index})">Remove</button>
+                    `;
+                    ordersContainer.appendChild(orderDiv);
+                });
+            } else {
+                ordersContainer.innerHTML = '<p>No orders available.</p>';
+            }
+        }
+
+        function removeOrder(index) {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            if (index >= 0 && index < orders.length) {
+                const removedOrder = orders[index];  // Store the removed order
+                orders.splice(index, 1);  // Remove the order from orders
+                localStorage.setItem('orders', JSON.stringify(orders));  // Update local storage
+
+                removeFromInventory(removedOrder.name);  // Remove from inventory as well
+                alert('Order removed successfully!');
+
+                displayOrders();  // Refresh the displayed orders
+            }
+        }
+
+        function removeFromInventory(name) {
+            const inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+            const updatedInventory = inventory.filter(item => item.name !== name);
+            localStorage.setItem('inventory', JSON.stringify(updatedInventory)); // Update inventory in local storage
+        }
+
+        function addItem() {
+            const name = document.getElementById('add-name').value;
+            const quantity = document.getElementById('add-quantity').value;
+            const by = document.getElementById('add-by').value;
+            const from = document.getElementById('add-from').value;
+            const costPrice = document.getElementById('add-cost-price').value;
+            const sellingPrice = document.getElementById('add-selling-price').value;
+            const dateAdded = new Date().toISOString();
+
+            if (name && quantity && by && from && costPrice && sellingPrice) {
+                const inventoryItem = { name, quantity, by, from, costPrice, sellingPrice, dateAdded };
+                const orders = JSON.parse(localStorage.getItem('orders')) || [];
+                const inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+
+                // Add to both inventory and orders
+                orders.push(inventoryItem);
+                inventory.push(inventoryItem);
+                localStorage.setItem('orders', JSON.stringify(orders));
+                localStorage.setItem('inventory', JSON.stringify(inventory));
+
+                alert('Item added successfully!');
+                document.getElementById('add-inventory-form').reset();  // Clear form fields
+                displayOrders();  // Refresh the displayed orders
+            } else {
+                alert('Please fill out all fields.');
+            }
+        }
+
+        // Load orders when the page loads
+        window.onload = displayOrders;
+
+        document.getElementById('menuButton').addEventListener('click', function() {
+            var menu = document.getElementById('menu');
+            if (menu.style.left === '0px') {
+                menu.style.left = '-250px';
+            } else {
+                menu.style.left = '0px';
+            }
+        });
+    </script>
+</body>
+</html>
+

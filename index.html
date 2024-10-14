@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <style>
+        /* Global Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigation and Menu Styling */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        nav h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #menuButton {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .menu {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #333;
+            display: flex;
+            flex-direction: column;
+            padding-top: 100px;
+            transition: left 0.3s;
+            z-index: 999;
+        }
+
+        .menu a {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .menu a:hover {
+            background-color: #575757;
+        }
+
+        /* Content Section Styling */
+        #content {
+            margin-left: 0;
+            transition: margin-left 0.3s;
+            padding: 20px;
+            padding-top: 70px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .menu {
+                width: 200px;
+            }
+
+            nav h1 {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu {
+                width: 150px;
+            }
+
+            nav h1 {
+                font-size: 1em;
+            }
+
+            .form-group button {
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <h1>Rumwell Online</h1>
+        <button id="menuButton">&#9776;</button>
+    </nav>
+
+    <!-- Sidebar Menu -->
+    <div id="menu" class="menu">
+        <a href="index.html">Home</a>
+        <a href="inv.html">Inventory</a>
+        <a href="ord.html">Orders</a>
+        <a href="stats.html">Statistics</a>
+        <a href="index.html#drawings">Drawings</a>
+        <a href="exp.html">Expenses</a>
+        <a href="deb.html">Debtors</a>
+        <a href="cred.html">Creditors</a>
+        <a href="inc.html">Incomes</a>
+    </div>
+
+    <!-- Main Content -->
+    <div id="content">
+        <div class="container" id="inventory">
+            <h2>Low Inventory</h2>
+            <table id="lowInventoryTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be added here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container" id="orders">
+            <h2>Add to Inventory</h2>
+            <div class="form-group">
+                <label for="name">Name of Item</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="number" id="quantity" required min="1">
+            </div>
+            <div class="form-group">
+                <label for="by">By</label>
+                <input type="text" id="by" required>
+            </div>
+            <div class="form-group">
+                <label for="from">From</label>
+                <input type="text" id="from" required>
+            </div>
+            <div class="form-group">
+                <label for="costPrice">Cost Price</label>
+                <input type="number" id="costPrice" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="sellingPrice">Selling Price</label>
+                <input type="number" id="sellingPrice" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <button type="button" id="addToInventoryButton">Add</button>
+            </div>
+        </div>
+
+        <div class="container" id="drawings">
+            <h2>Drawings</h2>
+            <div class="form-group">
+                <label for="byDrawing">By</label>
+                <input type="text" id="byDrawing">
+            </div>
+            <div class="form-group">
+                <label for="use">Use</label>
+                <input type="text" id="use" placeholder="optional">
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount</label>
+                <input type="number" id="amount">
+            </div>
+            <div class="form-group">
+                <label for="drawingDate">Date</label>
+                <input type="date" id="drawingDate" required>
+            </div>
+            <div class="form-group">
+                <button type="button" id="submitDrawingButton">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        document.getElementById('menuButton').addEventListener('click', function() {
+            const menu = document.getElementById('menu');
+            menu.style.left = menu.style.left === '0px' ? '-250px' : '0px';
+        });
+    
+        // Load low inventory items from local storage
+        function loadLowInventory() {
+            const inventory = JSON.parse(localStorage.getItem('totalStoreInventory')) || []; // Use 'inventory' key
+            const lowInventoryTableBody = document.getElementById('lowInventoryTable').querySelector('tbody');
+            lowInventoryTableBody.innerHTML = ''; // Clear existing rows
+    
+            inventory.forEach(item => {
+                if (item.quantity < 24) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${item.name}</td><td>${item.quantity}</td>`;
+                    lowInventoryTableBody.appendChild(row);
+                }
+            });
+        }
+    
+        // Handle adding items to inventory
+        function handleAddToInventory() {
+            const name = document.getElementById('name').value.trim();
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const by = document.getElementById('by').value.trim();
+            const from = document.getElementById('from').value.trim();
+            const costPrice = parseFloat(document.getElementById('costPrice').value);
+            const sellingPrice = parseFloat(document.getElementById('sellingPrice').value);
+    
+            if (name && quantity > 0 && by && from && !isNaN(costPrice) && !isNaN(sellingPrice)) {
+                const inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+                const existingItem = inventory.find(item => item.name === name); // Check if item exists
+    
+                if (existingItem) {
+                    existingItem.quantity += quantity; // Update quantity
+                } else {
+                    inventory.push({ name, quantity, by, from, costPrice, sellingPrice }); // Add new item
+                }
+    
+                localStorage.setItem('inventory', JSON.stringify(inventory)); // Save to local storage
+                alert('Item added to inventory successfully!');
+                loadLowInventory(); // Reload low inventory
+                clearAddToInventoryFields(); // Clear input fields
+            } else {
+                alert('Please fill in all fields correctly.');
+            }
+        }
+    
+        // Clear input fields
+        function clearAddToInventoryFields() {
+            document.getElementById('name').value = '';
+            document.getElementById('quantity').value = '';
+            document.getElementById('by').value = '';
+            document.getElementById('from').value = '';
+            document.getElementById('costPrice').value = '';
+            document.getElementById('sellingPrice').value = '';
+        }
+    
+        // Handle drawing submission
+        function handleSubmitDrawing() {
+            const byDrawing = document.getElementById('byDrawing').value.trim();
+            const use = document.getElementById('use').value.trim();
+            const amount = parseFloat(document.getElementById('amount').value);
+            const drawingDateInput = document.getElementById('drawingDate').value; // Use date input value
+    
+            if (byDrawing && !isNaN(amount) && drawingDateInput) {
+                // Convert the date from YYYY-MM-DD to MM/DD/YYYY format
+                const drawingDateParts = drawingDateInput.split('-');
+                const formattedDate = `${drawingDateParts[1]}/${drawingDateParts[2]}/${drawingDateParts[0]}`; // MM/DD/YYYY
+    
+                const drawings = JSON.parse(localStorage.getItem('drawings')) || [];
+                drawings.push({ by: byDrawing, use, amount, date: formattedDate });
+                localStorage.setItem('drawings', JSON.stringify(drawings)); // Save to local storage
+                alert('Drawing submitted successfully!');
+                clearDrawingFields(); // Clear input fields
+            } else {
+                alert('Please fill in all fields correctly.');
+            }
+        }
+    
+        // Clear drawing input fields
+        function clearDrawingFields() {
+            document.getElementById('byDrawing').value = '';
+            document.getElementById('use').value = '';
+            document.getElementById('amount').value = '';
+            document.getElementById('drawingDate').value = '';
+        }
+    
+        // Add event listeners
+        document.getElementById('addToInventoryButton').addEventListener('click', handleAddToInventory);
+        document.getElementById('submitDrawingButton').addEventListener('click', handleSubmitDrawing);
+        loadLowInventory(); // Load low inventory on page load
+    </script>
+    
+</body>
+</html>
