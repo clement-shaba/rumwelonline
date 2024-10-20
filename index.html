@@ -295,7 +295,8 @@ class="total" colspan="6"><strong >TOTAL:</strong></td>
 let longPressTimer;  // Timer for detecting long press
 
 // Get current date
-let currentDate = "2024-10-14";
+// Get current date in YYYY-MM-DD format
+let currentDate = new Date().toISOString().split('T')[0];
 
 // Load initial data from localStorage
 loadDateData(currentDate);
@@ -316,7 +317,6 @@ function nextDate() {
     loadDateData(formattedDate);
 }
 
-// Function to load data for a specific date
 // Function to load data for a specific date
 function loadDateData(date) {
     // Set current date
@@ -345,6 +345,7 @@ function loadDateData(date) {
     // Update turnover calculations
     calculateTurnover();
 }
+
 
 
 // Function to add a new item
