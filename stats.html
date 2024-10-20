@@ -1,252 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statistics</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Rumwell Online Statistics</title>
     <style>
-
         body {
+            zoom: 0.5;
             font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
             margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            zoom: 0.6;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-        }
-
-       
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #333;
-            padding: 10px 20px;
-            color: white;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-
-        nav h1 {
-            margin: 0;
-            font-size: 1.5em;
-        }
-
-        #menuButton {
-            background-color: transparent;
-            border: none;
-            color: white;
-            font-size: 1.5em;
-            cursor: pointer;
-        }
-
-        .menu {
-            position: fixed;
-            top: 0;
-            left: -250px;
-            width: 250px;
-            height: 100%;
-            background-color: #333;
-            display: flex;
-            flex-direction: column;
-            padding-top: 100px;
-            transition: left 0.3s;
-            z-index: 999;
-        }
-
-        .menu a {
-            padding: 10px 20px;
-            text-decoration: none;
-            color: white;
-        }
-
-        .menu a:hover {
-            background-color: #575757;
-        }
-
-        main {
-            margin-top: 80px;
             padding: 20px;
         }
 
-        h1, h2 {
-            color: #333;
-        }
-
-        .statistics, .finance-info {
-            background-color: #f9f9f9;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .date-navigation {
-            display: flex;
-            align-items: start;
-            margin-bottom: 20px;
-            
-            flex-direction: row;
-        }
-        p{
-            text-align: left;
-            font-size: medium;
-        }
-        .date-navigation button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            cursor: pointer;
-            margin: 0 10px;
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
         }
 
-        #dateDisplay {
-            font-size: 18px;
-            font-weight: bold;
+        .statistics,
+        .revenue-liabilities,
+        .incomes {
+            margin-bottom: 20px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 10px;
-            background-color: white;
+            margin-bottom: 20px;
         }
 
-        table th, table td {
-            border: 1px solid #ccc;
-            padding: 8px;
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td { 
+font-size: 9px;
+            padding: 10px;
             text-align: center;
         }
 
-        table th {
+        th {
             background-color: #4CAF50;
             color: white;
         }
 
-        tfoot td {
-            font-weight: bold;
+        .total {
+            text-align: right;
         }
 
-        table tr:hover {
-            background-color: #f1f1f1;
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 10px;
         }
 
-        .edit-closing {
+        .add-item-btn {
+            padding: 10px;
             background-color: #4CAF50;
             color: white;
             border: none;
-            padding: 8px 16px;
-            margin-top: 10px;
             cursor: pointer;
+            text-align: center;
         }
 
-        .finance-info {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-
-        .finance-info > div {
-            flex: 1;
-            margin: 10px;
-            padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            
-        }
-        .finance-info ul{
-            text-align: left;
-        }
-        .finance-info h2{
-            text-align: left;
-        }
-        button:hover {
+        .add-item-btn:hover {
             background-color: #45a049;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            header, .finance-info > div {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .finance-info {
-                flex-direction: column;
-            }
-
-            .date-navigation {
-                flex-direction: row;
-                text-align: center;
-            }
-        }
-         /* Responsive Design */
-         @media (max-width: 768px) {
-            .menu {
-                width: 200px;
-            }
-
-            nav h1 {
-                font-size: 1.2em;
-            }
+        .date-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
-        @media (max-width: 480px) {
-            .menu {
-                width: 150px;
-            }
-
-            nav h1 {
-                font-size: 1em;
-            }
-
-            .form-group button {
-                padding: 8px 16px;
-            }
+        .date-navigation button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
         }
+
+        .date-navigation button:hover {
+            background-color: #45a049;
+        }
+
+        .date-navigation input {
+            font-size: 18px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .revenue-liabilities h3,
+        .incomes h3 {
+            margin-top: 20px;
+        }
+
+        .revenue-liabilities div,
+        .incomes div {
+            margin-bottom: 10px;
+        }
+
+.turnover-container {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.u{
+padding: 30px;
+background-color: #f1f1f1;
+border-radius: 20px;
+text-align: top;
+ }
+.hi{
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+}
+h4{
+padding:0px;
+}
+
+.revenue-liabilities{
+border-bottom: 4px solid black;
+border-top: 4px solid black;
+padding-top: 20px;
+padding-bottom: 20px;
+}
+.incomes{
+padding-top: 20px;
+border-bottom: 4px solid black;
+padding-bottom: 20px;
+}
     </style>
 </head>
+
 <body>
-    <nav style="width: 100%;">
-        <h1 style="color: white;">Rumwell Online</h1>
-        <button id="menuButton">&#9776;</button>
-    </nav>
+    <div class="container">
+        <h1>Rumwell Online</h1>
 
-    <!-- Sidebar Menu -->
-    <div id="menu" class="menu">
-        <a href="index.html">Home</a>
-        <a href="inv.html">Inventory</a>
-        <a href="ord.html">Orders</a>
-        <a href="stats.html">Statistics</a>
-        <a href="index.html#drawings">Drawings</a>
-        <a href="exp.html">Expenses</a>
-        <a href="deb.html">Debtors</a>
-        <a href="cred.html">Creditors</a>
-        <a href="inc.html">Incomes</a>
-    </div>
+        <div class="date-navigation">
+    <button onclick="prevDate()">&#60; Prev</button>
+    <input type="text" id="currentDate" value="2024-10-14" readonly>
+    <button onclick="nextDate()">Next &#62;</button>
+    <button id="shareBtn" style="float: right;" onclick="shareTable()">Share</button>
+</div>
 
-    <main>
-        <section class="statistics">
-            <h1>Statistics</h1>
-            <div class="date-navigation">
-                <button id="prevDate">&lt;</button>
-                <span id="dateDisplay">Date</span>
-                <button id="nextDate">&gt;</button>
-            </div>
-            <table id="stockTable">
+
+        <div class="statistics">
+            <h2 class="section-title">Statistics</h2>
+            <table id="statisticsTable">
                 <thead>
                     <tr>
                         <th>Item</th>
@@ -259,700 +177,540 @@
                         <th>Total</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!-- Table rows will be dynamically filled -->
-                </tbody>
+                <tbody></tbody>
                 <tfoot>
-                    <tr>
 
+                    <tr>
+<td>  <button class="add-item-btn" onclick="addItem()" style="float: left;">+ Add</button></td>
+                        <td 
+                          
+class="total" colspan="6"><strong >TOTAL:</strong></td>
+                        <td id="totalAmount"><strong>K0.00</strong></td>
                     </tr>
+                   
                 </tfoot>
             </table>
-        </section>
+        </div>
 
-        <section class="finance-info">
-            <div class="finance-info", id="expensesDiv" script="">
-                    <h2>Expenses</h2>
-
-                </div>
-                <div class="finance-info", id="debtorsDiv">
-                    <h2>Debtors</h2>
-
-                </div>
-                <div class="finance-info", id="drawingsDiv">
-                    <h2>Drawings</h2>
-
-                </div>
-                <div class="finance-info", id="creditPayDiv">
-                    <h2>Credit Payments</h2>
-
-                </div>
-                
-            
-                <div class="finance-info", id="ownerDepositDiv">
-                    <h2>Owner's Deposit</h2>
-
-                </div>
-            
-                <div class="finance-info", id="creditorDiv">
-                    <h2>Creditors</h2>
-
-                </div>
-
-                <div class="finance-info", id="debtPayDiv">
-                    <h2>Debtor Payments</h2>
-
-                </div>
-                
-            
-
-            <div class="turnover">
-                <h2>Turnover</h2>
-                <p>Total liabilities: <span id="totalLiabilities">$0</span></p>
-                <p id="totalIncome">Total Income: K0.00</p>
-
-                <div id="netSalesDiv">
-                    <p id="netSalesAmount">K0.00</p>
-                  </div>
-                  
-                  <div id="netPurchasesDiv">
-                    <p id="netPurchasesAmount">K0.00</p>
-                  </div>
-                  
-                  <div id="turnoverTotalDiv">
-                    <p id="turnoverTotalAmount">K0.00</p>
-                  </div>
-
-                  <div id="netProfitDiv">
-                    
-                    <p id="netProfitAmount">K0.00</p>
-                  </div>
-                  
+        <div class="revenue-liabilities">
+            <h2>Revenue Liabilities</h2>
+<div class="hi">
+            <div class="u" id="expenses">
+                <h4>Expenses</h4>
+<button onclick="addRevenueLiability('expenses')">+ Add</button>
             </div>
-        </section>
-    </main>
-    <script>
-        document.getElementById('menuButton').addEventListener('click', function() {
-            const menu = document.getElementById('menu');
-            menu.style.left = menu.style.left === '0px' ? '-250px' : '0px';
-        });
-document.addEventListener('DOMContentLoaded', () => {
-    setupDateNavigation(); // Set up date navigation
-     // Render items for the current date
-    renderExpenses();
-    renderDebtors();
-    renderCreditorPay();
-    renderDrawings();
-    calculateTotalLiabilities();
-    renderOwnerdeposit();
-    renderCreditors();
-    renderDebtorPay();
-    calculateTotalIncome();
-    renderItems();
-});
+                
+            <div class="u"  id="debtors">
+                <h4>Debtors</h4>
+                <button onclick="addRevenueLiability('debtors')">+ Add</button>
+            </div>
+            <div class="u"  id="drawings">
+                <h4>Drawings</h4>
+                <button onclick="addRevenueLiability('drawings')">+ Add</button>
+            </div>
+            <div class="u" id="creditPayments">
+                <h4>Credit Payments</h4>
+                <button onclick="addRevenueLiability('creditPayments')">+ Add</button>
+            </div>
+        </div>
+</div>
+        <div class="incomes">
+            <h2>Incomes</h2>
+<div class="hi">
+            <div class="u" id="credit">
+                <h4>Credit</h4>
+                <button onclick="addIncome('credit')">+ Add</button>
+            </div>
+            <div class="u" id="ownersDeposit">
+                <h4>Owners Deposit</h4>
+                <button onclick="addIncome('ownersDeposit')">+ Add</button>
+            </div>
+            <div class="u" id="debtorPayments">
+                <h4>Debtor Payments</h4>
+                <button onclick="addIncome('debtorPayments')">+ Add</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-function setupDateNavigation() {
-    const prevButton = document.getElementById('prevDate');
-    const nextButton = document.getElementById('nextDate');
-    const dateDisplay = document.getElementById('dateDisplay');
-    
-    let currentDate = new Date(); // Start with today's date
+<div class="turnover-container">
+    <h2 class="section-title">Turnover</h2>
+    <div>Total Revenue Liabilities: <span id="totalRevenueLiabilities">K0.00</span></div>
+    <div>Total Incomes: <span id="totalIncomes">K0.00</span></div>
+    <div>Net Sales: <span id="netSales">K0.00</span></div>
+    <div>Net Purchases: <span id="netPurchases">K0.00</span></div>
+    <div>Gross Profit: <span id="grossProfit">K0.00</span></div>
+    <div>Net Profit: <span id="netProfit">K0.00</span></div>
+</div>
 
-    // Display the current date in DD/MM/YYYY format
-    function updateDateDisplay() {
-        const day = currentDate.getDate().toString().padStart(2, '0');
-        const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-        const year = currentDate.getFullYear();
-        dateDisplay.textContent = `${month}/${day}/${year}`;
-    }
+<script>
+    function shareTable() {
+        // Get all rows from the table
+        const table = document.getElementById('statisticsTable').getElementsByTagName('tbody')[0];
+        const rows = table.getElementsByTagName('tr');
+        let tableData = 'Statistics Table:\n';
 
-    // Go to the previous day
-    prevButton.addEventListener('click', () => {
-        currentDate.setDate(currentDate.getDate() - 1);
-        updateDateDisplay();
-         
-        renderExpenses();
-        renderDebtors();// Re-render items for the new date
-        renderCreditorPay();
-        renderDrawings();
-        calculateTotalLiabilities();
-        renderOwnerdeposit();
-        renderCreditors();
-        renderDebtorPay();
-        calculateTotalIncome();
-        
-        renderItems();
-    });
-
-    // Go to the next day
-    nextButton.addEventListener('click', () => {
-        currentDate.setDate(currentDate.getDate() + 1);
-        updateDateDisplay();
-        
-        
-        renderExpenses(); 
-        renderDebtors();// Re-render items for the new date
-        renderCreditorPay();
-        renderDrawings();
-        calculateTotalLiabilities();
-        renderOwnerdeposit();
-        renderDebtorPay();
-        renderCreditors();
-        renderItems();
-        calculateTotalIncome();
-    });
-
-    updateDateDisplay(); // Initialize with the current date
-}
-function renderItems() {
-    const tableBody = document.getElementById('stockTable').getElementsByTagName('tbody')[0];
-    tableBody.innerHTML = ''; // Clear existing rows
-
-    const storeInventory = JSON.parse(localStorage.getItem('storeInventoryNew')) || [];
-    const closingStockStorage = JSON.parse(localStorage.getItem('closingStock')) || {}; // Get closing stocks from storage
-
-    // Get the selected date
-    const dateDisplay = document.getElementById('dateDisplay').textContent;
-
-    // Filter items by dateTransferred matching the displayed date
-    const filteredItems = storeInventory.filter(item => item.dateTransferred === dateDisplay);
-
-    // Group items by name
-    const groupedItems = filteredItems.reduce((acc, item) => {
-        if (!acc[item.name]) {
-            acc[item.name] = []; // Create an array to store multiple entries of the same item name
+        // Loop through rows and get the data
+        for (let i = 0; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+            const rowData = `${cells[0].innerText} - Opening: ${cells[1].innerText}, Orders: ${cells[2].innerText}, Closing: ${cells[4].innerText}, Price: ${cells[6].innerText}, Total: ${cells[7].innerText}\n`;
+            tableData += rowData;
         }
-        acc[item.name].push(item); // Push the current item
-        return acc;
-    }, {});
 
-    let finalTotal = 0; // Variable to hold the final total (for sales)
-    let finalNetPurchases = 0; // Variable to hold the final net purchases
+        // Append the total amount
+        const total = document.getElementById('totalAmount').innerText;
+        tableData += `\nTOTAL: ${total}\n`;
 
-    Object.keys(groupedItems).forEach(itemName => {
-        const itemGroup = groupedItems[itemName];
+        // Get revenue liabilities and incomes data
+        const revenueLiabilities = document.getElementById('totalRevenueLiabilities').innerText;
+        const incomes = document.getElementById('totalIncomes').innerText;
+        const netSales = document.getElementById('netSales').innerText;
+        const netPurchases = document.getElementById('netPurchases').innerText;
+        const grossProfit = document.getElementById('grossProfit').innerText;
+        const netProfit = document.getElementById('netProfit').innerText;
 
-        const row = tableBody.insertRow();
-        row.insertCell(0).textContent = itemName || 'N/A'; // Display item name only once
+        // Append revenue liabilities and incomes to the message
+        tableData += `\nRevenue and Incomes:\n`;
+        tableData += `Total Revenue Liabilities: ${revenueLiabilities}\n`;
+        tableData += `Total Incomes: ${incomes}\n`;
+        tableData += `Net Sales: ${netSales}\n`;
+        tableData += `Net Purchases: ${netPurchases}\n`;
+        tableData += `Gross Profit: ${grossProfit}\n`;
+        tableData += `Net Profit: ${netProfit}\n`;
 
-        let openingStock = 0;
-        let orders = 0;
-        let totalStock = 0;
-        let sales = 0;
-        let price = 0;
-        let closingStock = 0; // Consolidated closing stock for merged items
+        // Encode the data for WhatsApp
+        const encodedData = encodeURIComponent(tableData);
 
-        // Retrieve closing stock based on item name and date
-        const closingKey = `${itemName}_${dateDisplay}`;
-        closingStock = closingStockStorage[closingKey] || 0;
+        // Generate the WhatsApp share link
+        const whatsappUrl = `https://wa.me/?text=${encodedData}`;
+        window.open(whatsappUrl, '_blank');
+    }
 
-        itemGroup.forEach(item => {
-            if (item.flag === 'added') {
-                openingStock += item.quantity || 0; // Sum opening stock for added items
-            }
-            if (item.flag === 'transferred') {
-                orders += item.quantity || 0; // Sum orders for transferred items
-            }
-        });
 
-        totalStock = openingStock + orders;
 
-        // Display Opening Stock, Orders, Total Stock
-        row.insertCell(1).textContent = openingStock; // Opening Stock
-        row.insertCell(2).textContent = orders; // Orders
-        row.insertCell(3).textContent = totalStock; // Total Stock
+ const LOCAL_STORAGE_KEY = 'rumwel-stats';
+let longPressTimer;  // Timer for detecting long press
 
-        // Closing Stock
-        const closingStockCell = row.insertCell(4);
-        closingStockCell.textContent = closingStock;
-        makeEditable(closingStockCell, 'closingStock', itemGroup, itemName, dateDisplay); // Pass the item name and date for edit
+// Get current date
+let currentDate = "2024-10-14";
 
-        // Calculate and Display Sales
-        sales = totalStock - closingStock; // Sales calculation
-        row.insertCell(5).textContent = sales; // Sales
+// Load initial data from localStorage
+loadDateData(currentDate);
 
-        // Price
-        price = parseFloat(itemGroup[0].sellingPrice) || 0; // Get the selling price from the first item in the group
-        const priceCell = row.insertCell(6);
-        priceCell.textContent = price.toFixed(2);
-        makeEditable(priceCell, 'sellingPrice', itemGroup, itemName, dateDisplay); // Pass the item name and date for edit
+// Function to navigate to previous date
+function prevDate() {
+    const date = new Date(currentDate);
+    date.setDate(date.getDate() - 1);
+    const formattedDate = date.toISOString().split('T')[0];
+    loadDateData(formattedDate);
+}
 
-        // Total Sales Calculation
-        const totalCell = row.insertCell(7);
-        const total = (sales * price).toFixed(2);
-        totalCell.textContent = total;
+// Function to navigate to next date
+function nextDate() {
+    const date = new Date(currentDate);
+    date.setDate(date.getDate() + 1);
+    const formattedDate = date.toISOString().split('T')[0];
+    loadDateData(formattedDate);
+}
 
-        finalTotal += parseFloat(total); // Add to final sales total
+// Function to load data for a specific date
+// Function to load data for a specific date
+function loadDateData(date) {
+    // Set current date
+    currentDate = date;
+    document.getElementById('currentDate').value = currentDate;
 
-        // Calculate Net Purchases (Orders * Price)
-        const netPurchases = (orders * price).toFixed(2);
-        finalNetPurchases += parseFloat(netPurchases); // Add to final net purchases
+    // Get data for the current date from localStorage
+    let dateData = getStoredData(currentDate);
+
+    // Clear table rows
+    const tbody = document.getElementById('statisticsTable').getElementsByTagName('tbody')[0];
+    tbody.innerHTML = "";
+
+    // Add rows based on date data
+    dateData.forEach(itemData => {
+        addItemRow(itemData);
     });
 
-    // Add a final total row for sales
-    const finalRow = tableBody.insertRow();
-    finalRow.insertCell(0).textContent = "TOTAL";
-    finalRow.insertCell(1).textContent = "--"; // Empty cell for Opening Stock
-    finalRow.insertCell(2).textContent = "--"; // Empty cell for Orders
-    finalRow.insertCell(3).textContent = "--"; // Empty cell for Total Stock
-    finalRow.insertCell(4).textContent = "--"; // Empty cell for Closing Stock
-    finalRow.insertCell(5).textContent = "--"; // Empty cell for Sales
-    finalRow.insertCell(6).textContent = "--"; // Empty cell for Price
-    finalRow.insertCell(7).textContent = "K" + finalTotal.toFixed(2); // Display the final total sales
+    // Update total sum of all rows
+    updateTotalAmount();
 
-    // Update Net Sales and Net Purchases in the DOM
-    document.getElementById('netSalesAmount').textContent = `Net Sales: K${finalTotal.toFixed(2)}`;
-    document.getElementById('netPurchasesAmount').textContent = `Net Purchases: K${finalNetPurchases.toFixed(2)}`; // Update Net Purchases
+    // Render liabilities and incomes for the selected date
+    renderLiabilities(currentDate);
+    renderIncomes(currentDate);
 
-    // Assuming you already have a way to get Total Income (e.g., from another calculation or input field)
-    
-        // Retrieve data from localStorage
-        const contributions = JSON.parse(localStorage.getItem('contributions')) || []; // Owner deposits
-    const creditors= JSON.parse(localStorage.getItem('creditors')) || []; // Creditor payments
-    const debtorPayments = JSON.parse(localStorage.getItem('debtorPayments')) || []; // Debtor payments
-
-    // Get the selected date
-    
-
-    // Filter data by the selected date
-    const filteredContributions = contributions.filter(contribution => contribution.date === dateDisplay);
-    const filteredCreditors = creditors.filter(creditor => creditor.date === dateDisplay);
-    const filteredDebtorPayments = debtorPayments.filter(payment => payment.paymentDate === dateDisplay);
-
-    // Sum the amounts
-    const totalContributions = filteredContributions.reduce((total, contribution) => total + parseFloat(contribution.amount || 0), 0);
-    const totalCreditors = filteredCreditors.reduce((total, creditor) => total + parseFloat(creditor.amount || 0), 0);
-    const totalDebtorPayments = filteredDebtorPayments.reduce((total, payment) => total + parseFloat(payment.amountPaid || 0), 0);
-
-    // Calculate total income
-    const totalIncome = totalContributions + totalCreditors + totalDebtorPayments; // Adjust this if needed
-    
-    // Calculate Turnover Total (Net Sales + Total Income)
-    const turnoverTotal = finalTotal + totalIncome;
-    document.getElementById('turnoverTotalAmount').textContent = `Gross Profit: K${turnoverTotal.toFixed(2)}`; // Update Turnover Total
-
-        // Retrieve the data from localStorage or set to an empty array if not found
-        const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
-        const debtors = JSON.parse(localStorage.getItem('debtors')) || [];
-        const creditPayments = JSON.parse(localStorage.getItem('creditPayments')) || [];
-        const drawings = JSON.parse(localStorage.getItem('drawings')) || [];
-
-        // Get the selected date
-
-
-        // Filter the data by the selected date
-        const filteredExpenses = expenses.filter(expense => expense.date === dateDisplay);
-        const filteredDebtors = debtors.filter(debtor => debtor.admissionDate === dateDisplay);
-        const filteredCreditPayments = creditPayments.filter(payment => payment.date === dateDisplay);
-        const filteredDrawings = drawings.filter(drawing => drawing.date === dateDisplay);
-
-        // Sum up the amounts
-        const totalExpenses = filteredExpenses.reduce((total, expense) => total + parseFloat(expense.amount || 0), 0);
-        const totalDebtors = filteredDebtors.reduce((total, debtor) => total + parseFloat(debtor.amountOwing || 0), 0);
-        const totalCreditPayments = filteredCreditPayments.reduce((total, payment) => total + parseFloat(payment.amount || 0), 0);
-        const totalDrawings = filteredDrawings.reduce((total, drawing) => total + parseFloat(drawing.amount || 0), 0);
-
-        // Calculate total liabilities
-        const totalLiabilities = totalExpenses + totalDebtors + totalCreditPayments + totalDrawings;
-        
-        // Update the "Total liabilities" field in the DOM
-        const netProfit = turnoverTotal - totalLiabilities;
-        document.getElementById('netProfitAmount').textContent = `Net Profit: K${netProfit.toFixed(2)}`;
+    // Update turnover calculations
+    calculateTurnover();
 }
 
-function renderExpenses() {
-    const expensesDiv = document.getElementById('expensesDiv');
-    expensesDiv.innerHTML = `<h2>Expenses</h2>`; // Clear existing content
 
-    // Retrieve expenses from local storage
-    const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+// Function to add a new item
+function addItem() {
+    const table = document.getElementById('statisticsTable').getElementsByTagName('tbody')[0];
+    const newRow = table.insertRow();
 
-    // Get the selected date
-    const dateDisplay = document.getElementById('dateDisplay').textContent;
+    const itemCell = newRow.insertCell(0);
+    const openingStockCell = newRow.insertCell(1);
+    const ordersCell = newRow.insertCell(2);
+    const totalStockCell = newRow.insertCell(3);
+    const closingStockCell = newRow.insertCell(4);
+    const salesCell = newRow.insertCell(5);
+    const priceCell = newRow.insertCell(6);
+    const totalCell = newRow.insertCell(7);
 
-    // Filter expenses by the selected date
-    const filteredExpenses = expenses.filter(expense => expense.date === dateDisplay);
+    itemCell.contentEditable = true;
+    openingStockCell.contentEditable = true;
+    ordersCell.contentEditable = true;
+    closingStockCell.contentEditable = true;
+    priceCell.contentEditable = true;
 
-    // Create a list to display expenses
-    if (filteredExpenses.length > 0) {
-        const expenseList = document.createElement('ul');
-        filteredExpenses.forEach(expense => {
-            const listItem = document.createElement('li');
-            listItem.textContent = ` Detail: ${expense.detail} -- Amount: K${expense.amount}\n`;
-            expenseList.appendChild(listItem);
-        });
-        expensesDiv.appendChild(expenseList);
-    } else {
-        expensesDiv.textContent = 'No expenses recorded for this date.';
-    }
-}
-function renderDebtors() {
-    const debtorsDiv = document.getElementById('debtorsDiv');
-    debtorsDiv.innerHTML = `<h2>Debtors</h2>`; // Clear existing content
+    totalStockCell.innerHTML = "0";
+    salesCell.innerHTML = "0";
+    totalCell.innerHTML = "0.00";
 
-    // Retrieve expenses from local storage
-    const debtors = JSON.parse(localStorage.getItem('debtors')) || [];
+    // Add event listeners to update fields automatically
+    openingStockCell.addEventListener("input", calculateRow);
+    ordersCell.addEventListener("input", calculateRow);
+    closingStockCell.addEventListener("input", calculateRow);
+    priceCell.addEventListener("input", calculateRow);
 
-    // Get the selected date
-    const dateDisplay = document.getElementById('dateDisplay').textContent;
+    // Add long press detection for removing items
+    itemCell.addEventListener('mousedown', () => startLongPress(newRow));
+    itemCell.addEventListener('mouseup', cancelLongPress);
+    itemCell.addEventListener('mouseleave', cancelLongPress);
+    itemCell.addEventListener('touchstart', () => startLongPress(newRow));
+    itemCell.addEventListener('touchend', cancelLongPress);
 
-    // Filter expenses by the selected date
-    const filteredDebtors = debtors.filter(debtor => debtor.admissionDate === dateDisplay);
-
-    // Create a list to display expenses
-    if (filteredDebtors.length > 0) {
-        const debtorList = document.createElement('ul');
-        filteredDebtors.forEach(debtor => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `\n Debtor:${debtor.name} --- Amount:K${debtor.amountOwing}\n`;
-            debtorList.appendChild(listItem);
-        });
-        debtorsDiv.appendChild(debtorList);
-    } else {
-        debtorsDiv.textContent = 'No debtors recorded for this date.';
-    }
-}
-function renderCreditorPay() {
-    const creditPayDiv = document.getElementById('creditPayDiv');
-    creditPayDiv.innerHTML = '<h2>Credit Payments</h2>'; // Clear existing content
-
-    // Retrieve expenses from local storage
-    const creditPayments = JSON.parse(localStorage.getItem('creditPayments')) || [];
-
-    // Get the selected date
-    const dateDisplay = document.getElementById('dateDisplay').textContent;
-
-    // Filter expenses by the selected date
-    const filteredCreditPay = creditPayments.filter(creditPayment => creditPayment.date === dateDisplay);
-
-    // Create a list to display expenses
-    if (filteredCreditPay.length > 0) {
-        const creditPayList = document.createElement('ul');
-        filteredCreditPay.forEach(creditPayment => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `${creditPayment.creditor}: K${creditPayment.amount}`;
-            creditPayList.appendChild(listItem);
-        });
-        creditPayDiv.appendChild(creditPayList);
-    } else {
-        creditPayDiv.textContent = 'No expenses recorded for this date.';
-    }
-}
-function renderDrawings() {
-    const drawingsDiv = document.getElementById('drawingsDiv');
-    drawingsDiv.innerHTML = `<h2>Drawings<h>`; // Clear existing content
-
-    // Retrieve expenses from local storage
-    const drawings = JSON.parse(localStorage.getItem('drawings')) || [];
-
-    // Get the selected date
-    const dateDisplay = document.getElementById('dateDisplay').textContent;
-
-    // Filter expenses by the selected date
-    const filteredDrawings = drawings.filter(drawing => drawing.date === dateDisplay);
-
-    // Create a list to display expenses
-    if (filteredDrawings.length > 0) {
-        const drawingsList = document.createElement('ul');
-        filteredDrawings.forEach(drawing => {
-            const listItem = document.createElement('li');
-            listItem.textContent = ` By:${drawing.by} Amount:${drawing.amount} Use:${drawing.use}`;
-            drawingsList.appendChild(listItem);
-        });
-        drawingsDiv.appendChild(drawingsList);
-    } else {
-        drawingsDiv.textContent = 'No drawing recorded for this date.';
-    }
-}
-function calculateTotalLiabilities() {
-        // Retrieve the data from localStorage or set to an empty array if not found
-        const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
-        const debtors = JSON.parse(localStorage.getItem('debtors')) || [];
-        const creditPayments = JSON.parse(localStorage.getItem('creditPayments')) || [];
-        const drawings = JSON.parse(localStorage.getItem('drawings')) || [];
-
-        // Get the selected date
-        const dateDisplay = document.getElementById('dateDisplay').textContent;
-
-        // Filter the data by the selected date
-        const filteredExpenses = expenses.filter(expense => expense.date === dateDisplay);
-        const filteredDebtors = debtors.filter(debtor => debtor.admissionDate === dateDisplay);
-        const filteredCreditPayments = creditPayments.filter(payment => payment.date === dateDisplay);
-        const filteredDrawings = drawings.filter(drawing => drawing.date === dateDisplay);
-
-        // Sum up the amounts
-        const totalExpenses = filteredExpenses.reduce((total, expense) => total + parseFloat(expense.amount || 0), 0);
-        const totalDebtors = filteredDebtors.reduce((total, debtor) => total + parseFloat(debtor.amountOwing || 0), 0);
-        const totalCreditPayments = filteredCreditPayments.reduce((total, payment) => total + parseFloat(payment.amount || 0), 0);
-        const totalDrawings = filteredDrawings.reduce((total, drawing) => total + parseFloat(drawing.amount || 0), 0);
-
-        // Calculate total liabilities
-        const totalLiabilities = totalExpenses + totalDebtors + totalCreditPayments + totalDrawings;
-        
-        // Update the "Total liabilities" field in the DOM
-        document.getElementById('totalLiabilities').textContent = `K${totalLiabilities.toFixed(2)}`;
-    }
-
-function renderOwnerdeposit() {
-    const ownerDepositDiv = document.getElementById('ownerDepositDiv');
-    ownerDepositDiv.innerHTML = `<h2>Owner's Deposit</h2>`; // Clear existing content
-
-    // Retrieve expenses from local storage
-    const deposits= JSON.parse(localStorage.getItem('contributions')) || [];
-
-    // Get the selected date
-    const dateDisplay = document.getElementById('dateDisplay').textContent;
-
-    // Filter expenses by the selected date
-    const filteredDeposits = deposits.filter(deposit => deposit.date === dateDisplay);
-
-    // Create a list to display expenses
-    if (filteredDeposits.length > 0) {
-        const depositList = document.createElement('ul');
-        filteredDeposits.forEach(deposit => {
-            const listItem = document.createElement('li');
-            listItem.textContent = ` Capital contribution:   K${deposit.amount}\n`;
-            depositList.appendChild(listItem);
-        });
-        ownerDepositDiv.appendChild(depositList);
-    } else {
-        ownerDepositDiv.textContent = 'No deposits recorded for this date.';
-    }
-}
-function renderCreditors() {
-    const creditorDiv = document.getElementById('creditorDiv');
-    creditorDiv.innerHTML = `<h2>Creditors</h2>`; // Clear existing content
-
-    // Retrieve expenses from local storage
-    const creditors = JSON.parse(localStorage.getItem('creditors')) || [];
-
-    // Get the selected date
-    const dateDisplay = document.getElementById('dateDisplay').textContent;
-
-    // Filter expenses by the selected date
-    const filteredCreditors = creditors.filter(creditor => creditor.date === dateDisplay);
-
-    // Create a list to display expenses
-    if (filteredCreditors.length > 0) {
-        const creditorList = document.createElement('ul');
-        filteredCreditors.forEach(creditor => {
-            const listItem = document.createElement('li');
-            listItem.textContent = ` Name: ${creditor.name} --  K${creditor.amount}\n`;
-            creditorList.appendChild(listItem);
-        });
-        creditorDiv.appendChild(creditorList);
-    } else {
-        creditorDiv.textContent = 'No creditors recorded for this date.';
-    }
-}
-function renderDebtorPay() {
-    const debtPayDiv = document.getElementById('debtPayDiv');
-    debtPayDiv.innerHTML = `<h2>Debtor Payments</h2>`; // Clear existing content
-
-    // Retrieve expenses from local storage
-    const debtPayments = JSON.parse(localStorage.getItem('debtorPayments')) || [];
-
-    // Get the selected date
-    const dateDisplay = document.getElementById('dateDisplay').textContent;
-
-    // Filter expenses by the selected date
-    const filteredDebtorPayments = debtPayments.filter(debtPayment => debtPayment.paymentDate === dateDisplay);
-
-    // Create a list to display expenses
-    if (filteredDebtorPayments.length > 0) {
-        const debtpayList = document.createElement('ul');
-        filteredDebtorPayments.forEach(debtPayment => {
-            const listItem = document.createElement('li');
-            listItem.textContent = ` Name: ${debtPayment.name} --  K${debtPayment.amountPaid}\n`;
-            debtpayList.appendChild(listItem);
-        });
-        debtPayDiv.appendChild(debtpayList);
-    } else {
-        debtPayDiv.textContent = 'No no debtor payments recorded for this date.';
-    }
-}
-function calculateTotalIncome() {
-    // Retrieve data from localStorage
-    document.getElementById('totalIncome').textContent = `Total Incomes: `;
-    const contributions = JSON.parse(localStorage.getItem('contributions')) || []; // Owner deposits
-    const creditPayments = JSON.parse(localStorage.getItem('creditors')) || []; // Creditor payments
-    const debtorPayments = JSON.parse(localStorage.getItem('debtorPayments')) || []; // Debtor payments
-
-    // Get the selected date
-    const dateDisplay = document.getElementById('dateDisplay').textContent;
-
-    // Filter data by the selected date
-    const filteredContributions = contributions.filter(contribution => contribution.date === dateDisplay);
-    const filteredCreditPayments = creditPayments.filter(payment => payment.date === dateDisplay);
-    const filteredDebtorPayments = debtorPayments.filter(payment => payment.paymentDate === dateDisplay);
-
-    // Sum the amounts
-    const totalContributions = filteredContributions.reduce((total, contribution) => total + parseFloat(contribution.amount || 0), 0);
-    const totalCreditPayments = filteredCreditPayments.reduce((total, payment) => total + parseFloat(payment.amount || 0), 0);
-    const totalDebtorPayments = filteredDebtorPayments.reduce((total, payment) => total + parseFloat(payment.amountPaid || 0), 0);
-
-    // Calculate total income
-    const totalIncome = totalContributions + totalCreditPayments + totalDebtorPayments;
-
-    // Update the "Total Income" field in the DOM
-    document.getElementById('totalIncome').textContent = `Total Incomes: K${totalIncome.toFixed(2)}`;
-}
-
-// Function to make table cells editable
-function makeEditable(cell, field, itemGroup, itemName, date) {
-    cell.addEventListener('click', function () {
-        const currentValue = cell.textContent;
-
-        const input = document.createElement('input');
-        input.type = field === 'closingStock' ? 'number' : 'text'; // Use number input for closing stock, text for price
-        input.value = currentValue;
-        input.addEventListener('blur', function () {
-            const newValue = field === 'closingStock' ? parseInt(input.value) || 0 : parseFloat(input.value) || 0;
-
-            // Validation: ensure closing stock is not greater than total stock
-            if (field === 'closingStock' && newValue > parseInt(cell.parentElement.cells[3].textContent)) {
-                alert("Closing stock cannot be greater than total stock.");
-                cell.textContent = currentValue; // Revert to the previous value
-                return;
-            }
-
-            // Update the cell with the valid closing stock or price value
-            cell.textContent = newValue;
-
-            // Update the field in all items of the group
-            itemGroup.forEach(item => {
-                item[field] = newValue; // Update the closing stock or selling price for each item
-            });
-
-            // Update the localStorage for store inventory
-            updateLocalStorage(itemGroup);
-
-            // Store the new closing stock in localStorage with itemName and date
-            if (field === 'closingStock') {
-                updateClosingStockStorage(itemName, date, newValue);
-                // Also set the new closing stock as the next day's opening stock
-                setNextDaysOpeningStock(itemName, date, newValue);
-            } else if (field === 'sellingPrice') {
-                // Update selling price in local storage as needed
-                updateSellingPriceStorage(itemName, date, newValue);
-            }
-
-            // Recalculate the sales and total after editing the fields
-            
-            renderExpenses();
-            renderDebtors();
-            renderCreditorPay();
-            renderDrawings();
-            calculateTotalLiabilities();
-            renderOwnerdeposit();
-            renderCreditors();
-            renderDebtorPay();
-            calculateTotalIncome();
-            renderItems();
-        });
-
-        cell.innerHTML = ''; // Clear the cell and replace it with input
-        cell.appendChild(input);
-        input.focus();
+    // Immediately save the new item to localStorage
+    newRow.addEventListener("input", () => {
+        saveCurrentDateData();
     });
+
+    saveCurrentDateData();
 }
 
-// Update the items in localStorage after editing store inventory
-function updateLocalStorage(updatedItems) {
-    const storeInventory = JSON.parse(localStorage.getItem('storeInventoryNew')) || [];
-    const updatedInventory = storeInventory.map(item => {
-        const updatedItem = updatedItems.find(updated => 
-            updated.name === item.name && 
-            updated.flag === item.flag && 
-            updated.dateTransferred === item.dateTransferred
-        );
-        return updatedItem ? updatedItem : item; // Replace the old item with the updated one or keep the original
-    });
-    localStorage.setItem('storeInventoryNew', JSON.stringify(updatedInventory));
-}
-
-// Update the closing stock in localStorage for a specific item on a specific date
-function updateClosingStockStorage(itemName, date, closingStockValue) {
-    const closingStockStorage = JSON.parse(localStorage.getItem('closingStock')) || {};
-    const closingKey = `${itemName}_${date}`; // Create a unique key for the item and date
-    closingStockStorage[closingKey] = parseInt(closingStockValue) || 0; // Update the closing stock for the item on the specific date
-    localStorage.setItem('closingStock', JSON.stringify(closingStockStorage));
-}
-
-// Set the next day's opening stock based on the closing stock
-function setNextDaysOpeningStock(itemName, currentDate, closingStockValue) { 
-    const [month, day, year] = currentDate.split('/');
-    const nextDate = new Date(`${year}-${month}-${day}`);
-    nextDate.setDate(nextDate.getDate() + 1); // Increment the date by one day
-
-    const nextDayDisplay = `${(nextDate.getMonth() + 1).toString().padStart(2, '0')}/${nextDate.getDate().toString().padStart(2, '0')}/${nextDate.getFullYear()}`;
-    
-    // Fetch the totalStoreInventory from localStorage (or replace this with your method of accessing the file)
-    let totalStoreInventory = JSON.parse(localStorage.getItem('totalStoreInventory')) || [];
-
-    // Check if the item exists in the totalStoreInventory
-    const totalStoreItemIndex = totalStoreInventory.findIndex(item => item.name === itemName);
-
-    if (totalStoreItemIndex !== -1) {
-        // If the item exists, delete the old item
-        totalStoreInventory.splice(totalStoreItemIndex, 1);
-        
-        // Add the new item with the 'in-store' flag
-        totalStoreInventory.push({
-            name: itemName,
-            dateTransferred: nextDayDisplay,
-            flag: 'in-store',
-            quantity: closingStockValue,
-            sellingPrice: 0, // Initialize selling price if needed
-        });
-        
-        // Save the updated totalStoreInventory back to localStorage
-        localStorage.setItem('totalStoreInventory', JSON.stringify(totalStoreInventory));
-    }
-
-    // Now proceed with the logic to add the item to storeInventoryNew
-    const storeInventory = JSON.parse(localStorage.getItem('storeInventoryNew')) || [];
-
-    // Find the next day's item by filtering items with the next date
-    const nextDayItem = storeInventory.find(item => item.name === itemName && item.dateTransferred === nextDayDisplay);
-
-    if (nextDayItem) {
-        // If an item exists for the next day, update its opening stock
-        nextDayItem.quantity = closingStockValue;
-    } else {
-        // If no item exists, create a new entry for the next day with the closing stock as the opening stock
-        storeInventory.push({
-            name: itemName,
-            dateTransferred: nextDayDisplay,
-            flag: 'added',
-            quantity: closingStockValue,
-            sellingPrice: 0, // Initialize selling price if needed
-        });
-    }
-
-    // Save the updated storeInventory back to localStorage
-    localStorage.setItem('storeInventoryNew', JSON.stringify(storeInventory));
-}
-
-
-// Update the selling price in localStorage for a specific item on a specific date
-function updateSellingPriceStorage(itemName, date, sellingPriceValue) {
-    const storeInventory = JSON.parse(localStorage.getItem('storeInventoryNew')) || [];
-    
-    // Find the item and update its selling price
-    storeInventory.forEach(item => {
-        if (item.name === itemName && item.dateTransferred === date) {
-            item.sellingPrice = parseFloat(sellingPriceValue) || 0; // Update the selling price
+// Function to start the long press timer
+function startLongPress(row) {
+    longPressTimer = setTimeout(() => {
+        if (confirm("Do you want to remove this item?")) {
+            row.remove();  // Remove the item from the table
+            saveCurrentDateData();  // Save changes to localStorage
         }
-    });
-
-    localStorage.setItem('storeInventoryNew', JSON.stringify(storeInventory));
-
-
+    }, 2000);  // Long press duration: 2000ms (2 seconds)
 }
 
-        </script>
+// Function to cancel the long press
+function cancelLongPress() {
+    clearTimeout(longPressTimer);
+}
+
+// Function to add item row
+function addItemRow(itemData) {
+    const tbody = document.getElementById('statisticsTable').getElementsByTagName('tbody')[0];
+    const newRow = tbody.insertRow();
+
+    const itemCell = newRow.insertCell(0);
+    const openingStockCell = newRow.insertCell(1);
+    const ordersCell = newRow.insertCell(2);
+    const totalStockCell = newRow.insertCell(3);
+    const closingStockCell = newRow.insertCell(4);
+    const salesCell = newRow.insertCell(5);
+    const priceCell = newRow.insertCell(6);
+    const totalCell = newRow.insertCell(7);
+
+    itemCell.innerText = itemData.item;
+    openingStockCell.innerText = itemData.openingStock;
+    ordersCell.contentEditable = true;
+    closingStockCell.contentEditable = true;
+    priceCell.contentEditable = true;
+    ordersCell.innerText = itemData.orders;
+    closingStockCell.innerText = itemData.closingStock;
+    priceCell.innerText = itemData.price.toFixed(2);
+
+    // Initial calculations
+    const totalStock = itemData.openingStock + itemData.orders;
+    totalStockCell.innerText = totalStock;
+
+    const sales = totalStock - itemData.closingStock;
+    salesCell.innerText = sales;
+
+    const total = sales * itemData.price;
+    totalCell.innerText = total.toFixed(2);
+
+    // Add event listeners for editable cells
+    ordersCell.addEventListener("input", () => calculateRow(newRow));
+    closingStockCell.addEventListener("input", () => calculateRow(newRow));
+    priceCell.addEventListener("input", () => calculateRow(newRow));
+
+    // Add long press detection for removing items
+    itemCell.addEventListener('mousedown', () => startLongPress(newRow));
+    itemCell.addEventListener('mouseup', cancelLongPress);
+    itemCell.addEventListener('mouseleave', cancelLongPress);
+    itemCell.addEventListener('touchstart', () => startLongPress(newRow));
+    itemCell.addEventListener('touchend', cancelLongPress);
+
+    // Immediately save the item row when modified
+    newRow.addEventListener("input", () => saveCurrentDateData());
+}
+
+// Function to calculate row data
+function calculateRow(row) {
+    const openingStock = parseFloat(row.cells[1].innerText) || 0;
+    const orders = parseFloat(row.cells[2].innerText) || 0;
+    const closingStock = parseFloat(row.cells[4].innerText) || 0;
+    const price = parseFloat(row.cells[6].innerText) || 0;
+
+    const totalStock = openingStock + orders;
+    row.cells[3].innerText = totalStock;
+
+    const sales = totalStock - closingStock;
+    row.cells[5].innerText = sales;
+
+    const total = sales * price;
+    row.cells[7].innerText = total.toFixed(2);
+
+    // Save current date's data to localStorage
+    saveCurrentDateData();
+
+    // Automatically add to next date if closing stock is added
+    if (closingStock) {
+        addToNextDate(row.cells[0].innerText, closingStock, price);
+    }
+
+    // Update total sum of all rows
+    updateTotalAmount();
+
+    // Update turnover calculations
+    updateTurnover();
+}
+
+// Function to update total sum
+function updateTotalAmount() {
+    const table = document.getElementById('statisticsTable').getElementsByTagName('tbody')[0];
+    const rows = table.rows;
+    let totalAmount = 0;
+
+    for (let i = 0; i < rows.length; i++) {
+        const rowTotal = parseFloat(rows[i].cells[7].innerText) || 0;
+        totalAmount += rowTotal;
+    }
+
+    document.getElementById('totalAmount').innerText = "K" + totalAmount.toFixed(2);
+
+    // Update turnover calculations
+    updateTurnover();
+}
+
+// Function to add item to next date
+function addToNextDate(item, closingStock, price) {
+    const date = new Date(currentDate);
+    date.setDate(date.getDate() + 1);
+    const nextDate = date.toISOString().split('T')[0];
+
+    let nextDateData = getStoredData(nextDate);
+
+    const existingItem = nextDateData.find(data => data.item === item);
+    if (existingItem) {
+        existingItem.openingStock = closingStock;
+    } else {
+        nextDateData.push({
+            item: item,
+            openingStock: closingStock,
+            orders: 0,
+            closingStock: 0,
+            price: price
+        });
+    }
+
+    saveData(nextDate, nextDateData);
+}
+
+// Function to save current date's data
+function saveCurrentDateData() {
+    const table = document.getElementById('statisticsTable').getElementsByTagName('tbody')[0];
+    const rows = table.rows;
+    const data = [];
+
+    for (let i = 0; i < rows.length; i++) {
+        const item = rows[i].cells[0].innerText;
+        const openingStock = parseFloat(rows[i].cells[1].innerText) || 0;
+        const orders = parseFloat(rows[i].cells[2].innerText) || 0;
+        const closingStock = parseFloat(rows[i].cells[4].innerText) || 0;
+        const price = parseFloat(rows[i].cells[6].innerText) || 0;
+
+        data.push({
+            item: item,
+            openingStock: openingStock,
+            orders: orders,
+            closingStock: closingStock,
+            price: price
+        });
+    }
+
+    saveData(currentDate, data);
+}
+
+// Function to save data to localStorage
+function saveData(date, data) {
+    localStorage.setItem(LOCAL_STORAGE_KEY + "-" + date, JSON.stringify(data));
+}
+
+// Function to get stored data for a specific date
+function getStoredData(date) {
+    const storedData = localStorage.getItem(LOCAL_STORAGE_KEY + "-" + date);
+    return storedData ? JSON.parse(storedData) : [];
+}
+
+// Function to add a new liability
+function addRevenueLiability(type) {
+    const name = prompt("Enter the name of the liability:");
+    const amount = parseFloat(prompt("Enter the amount of the liability:")) || 0;
+
+    if (name) {
+        const liability = { name, amount, type };
+        saveLiability(currentDate, liability);
         
+        // Re-render liabilities and recalculate turnover
+        renderLiabilities(currentDate);
+        calculateTurnover();  // Update turnover
+    }
+}
+
+// Function to add a new income
+function addIncome(type) {
+    const name = prompt("Enter the name of the income:");
+    const amount = parseFloat(prompt("Enter the amount of the income:")) || 0;
+
+    if (name) {
+        const income = { name, amount, type };
+        saveIncome(currentDate, income);
+        
+        // Re-render incomes and recalculate turnover
+        renderIncomes(currentDate);
+        calculateTurnover();  // Update turnover
+    }
+}
+
+
+// Save liability to localStorage
+function saveLiability(date, liability) {
+    const data = getStoredDataForDate(date, 'liabilities') || [];
+    data.push(liability);
+    localStorage.setItem(LOCAL_STORAGE_KEY + "-" + date + "-liabilities", JSON.stringify(data));
+}
+
+// Save income to localStorage
+function saveIncome(date, income) {
+    const data = getStoredDataForDate(date, 'incomes') || [];
+    data.push(income);
+    localStorage.setItem(LOCAL_STORAGE_KEY + "-" + date + "-incomes", JSON.stringify(data));
+}
+
+// Retrieve stored data for a specific date (liabilities or incomes)
+function getStoredDataForDate(date, key) {
+    const storedData = localStorage.getItem(LOCAL_STORAGE_KEY + "-" + date + "-" + key);
+    return storedData ? JSON.parse(storedData) : [];
+}
+
+// Render liabilities
+// Render liabilities
+function renderLiabilities(date) {
+    ['expenses', 'debtors', 'drawings', 'creditPayments'].forEach(type => {
+        const container = document.getElementById(type);
+        container.innerHTML = `<button onclick="addRevenueLiability('${type}')">+ Add</button><h3>${type.charAt(0).toUpperCase() + type.slice(1)}</h3>`;
+        
+        const liabilities = getStoredDataForDate(date, 'liabilities').filter(l => l.type === type);
+        liabilities.forEach((l, index) => {
+            const li = document.createElement('div');
+            li.innerText = `${l.name}: K${l.amount.toFixed(2)}`;
+
+            li.dataset.index = index;  // Store index for deletion reference
+            li.ondblclick = function() {
+                if (confirm(`Do you want to delete the liability: ${l.name}?`)) {
+                    deleteLiability(date, type, index);  // Call delete function
+                }
+            };
+            container.appendChild(li);
+        });
+    });
+}
+
+// Render incomes
+function renderIncomes(date) {
+    ['credit', 'ownersDeposit', 'debtorPayments'].forEach(type => {
+        const container = document.getElementById(type);
+        container.innerHTML = `<button onclick="addIncome('${type}')">+ Add</button><h3>${type.charAt(0).toUpperCase() + type.slice(1)}</h3>`;
+        
+        const incomes = getStoredDataForDate(date, 'incomes').filter(i => i.type === type);
+        incomes.forEach((i, index) => {
+            const li = document.createElement('div');
+            li.innerText = `${i.name}: K${i.amount.toFixed(2)}`;
+            li.dataset.index = index;  // Store index for deletion reference
+            li.ondblclick = function() {
+                if (confirm(`Do you want to delete the income: ${i.name}?`)) {
+                    deleteIncome(date, type, index);  // Call delete function
+                }
+            };
+            container.appendChild(li);
+        });
+    });
+}
+
+// Function to delete liability
+function deleteLiability(date, type, index) {
+    const data = getStoredDataForDate(date, 'liabilities');
+    data.splice(index, 1);  // Remove the liability from the array
+    localStorage.setItem(LOCAL_STORAGE_KEY + "-" + date + "-liabilities", JSON.stringify(data));
+    renderLiabilities(date);  // Re-render liabilities
+    calculateTurnover();  // Update turnover
+}
+
+// Function to delete income
+function deleteIncome(date, type, index) {
+    const data = getStoredDataForDate(date, 'incomes');
+    data.splice(index, 1);  // Remove the income from the array
+    localStorage.setItem(LOCAL_STORAGE_KEY + "-" + date + "-incomes", JSON.stringify(data));
+    renderIncomes(date);  // Re-render incomes
+    calculateTurnover();  // Update turnover
+}
+
+// Calculate turnover and display
+// Calculate turnover and display
+function calculateTurnover() {
+    const liabilities = getStoredDataForDate(currentDate, 'liabilities');
+    const incomes = getStoredDataForDate(currentDate, 'incomes');
+
+    const totalLiabilities = liabilities.reduce((sum, l) => sum + l.amount, 0);
+    const totalIncomes = incomes.reduce((sum, i) => sum + i.amount, 0);
+
+    const netSales = parseFloat(document.getElementById('totalAmount').innerText.replace('K', '')) || 0;
+    const netPurchases = Array.from(document.querySelectorAll('#statisticsTable tbody tr')).reduce((sum, row) => {
+        const orders = parseFloat(row.cells[2].innerText) || 0;
+        const price = parseFloat(row.cells[6].innerText) || 0;
+        return sum + (orders * price);
+    }, 0);
+
+    const grossProfit = netSales + totalIncomes;
+    const netProfit = grossProfit - totalLiabilities;
+
+    document.getElementById('totalRevenueLiabilities').innerText = `K${totalLiabilities.toFixed(2)}`;
+    document.getElementById('totalIncomes').innerText = `K${totalIncomes.toFixed(2)}`;
+    document.getElementById('netSales').innerText = `K${netSales.toFixed(2)}`;
+    document.getElementById('netPurchases').innerText = `K${netPurchases.toFixed(2)}`;
+    document.getElementById('grossProfit').innerText = `K${grossProfit.toFixed(2)}`;
+    document.getElementById('netProfit').innerText = `K${netProfit.toFixed(2)}`;
+}
+
+// Update turnover calculations
+function updateTurnover() {
+    const liabilities = getStoredDataForDate(currentDate, 'liabilities');
+    const incomes = getStoredDataForDate(currentDate, 'incomes');
+    calculateTurnover();
+}
+// Function to share the table via WhatsApp
+
+</script>
 
 </body>
+
 </html>
