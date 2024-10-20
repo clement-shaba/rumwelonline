@@ -147,6 +147,8 @@ padding-top: 20px;
 border-bottom: 4px solid black;
 padding-bottom: 20px;
 }
+.highlight {
+            background-color: #EBE6E0;
     </style>
 </head>
 
@@ -155,15 +157,16 @@ padding-bottom: 20px;
         <h1>Rumwell Online</h1>
 
         <div class="date-navigation">
-    <button onclick="prevDate()">&#60; Prev</button>
+    <button onclick="prevDate()">◀︎ Prev</button>
     <input type="text" id="currentDate" value="2024-10-14" readonly>
-    <button onclick="nextDate()">Next &#62;</button>
-    <button id="shareBtn" style="float: right;" onclick="shareTable()">Share</button>
+    <button onclick="nextDate()">Next ▶︎</button>
+    <button id="shareBtn" style="float: right;" onclick="shareTable()">📨share</button>
 </div>
 
 
         <div class="statistics">
             <h2 class="section-title">Statistics</h2>
+<input type="text" id="searchInput" placeholder="Search for an item..." oninput="searchItem()">
             <table id="statisticsTable">
                 <thead>
                     <tr>
@@ -708,6 +711,24 @@ function updateTurnover() {
     calculateTurnover();
 }
 // Function to share the table via WhatsApp
+function searchItem() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const rows = document.getElementById('statisticsTable').getElementsByTagName('tbody')[0].rows;
+
+    for (let i = 0; i < rows.length; i++) {
+        const itemCell = rows[i].cells[0];
+        const itemName = itemCell.innerText.toLowerCase();
+
+        // Remove highlight if the search input is empty or does not match
+        if (input === "" || !itemName.includes(input)) {
+            rows[i].classList.remove('highlight');
+        } 
+        // Highlight if the item name matches the input
+        else if (itemName.includes(input)) {
+            rows[i].classList.add('highlight');
+        }
+    }
+}
 
 </script>
 
