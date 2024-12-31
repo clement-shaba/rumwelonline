@@ -272,7 +272,7 @@ const input = document.getElementById("clipboardInput").value.trim();
 
   // Clear table body for new data
   tableBody.innerHTML = "";
-
+  saveCurrentDateData();
   // Split input into rows based on double line breaks
   const items = input.split("\n\n");
 
