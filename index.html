@@ -7,7 +7,7 @@
     <title>Rumwell Online Statistics</title>
     <style>
         body {
-            zoom: 0.7;
+            zoom: 0.5;
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
             margin: 0;
@@ -137,6 +137,7 @@ padding:0px;
 }
 
 .revenue-liabilities{
+
 border-bottom: 4px solid black;
 border-top: 4px solid black;
 padding-top: 20px;
@@ -164,7 +165,7 @@ padding-bottom: 20px;
 </div>
 
 
-        <div class="statistics">
+        <div class="statistics" style="margin-bottom: 100px;">
             <h2 class="section-title">Statistics</h2>
 <input type="text" id="searchInput" placeholder="Search for an item..." oninput="searchItem()">
             <table id="statisticsTable">
@@ -193,6 +194,14 @@ class="total" colspan="6"><strong >TOTAL:</strong></td>
                    
                 </tfoot>
             </table>
+   
+<button style=" padding: 10px;
+color: white;
+border-radius: 0px;
+margin-top: 20px;
+text-align: top; float: right; background-color: #4CAF50;"onclick="pasteFromClipboard()" >Retrieve data🖋</button>
+     
+
         </div>
 
         <div class="revenue-liabilities">
@@ -245,18 +254,82 @@ class="total" colspan="6"><strong >TOTAL:</strong></td>
     <div>Gross Profit: <span id="grossProfit">K0.00</span></div>
     <div>Net Profit: <span id="netProfit">K0.00</span></div>
 </div>
-
+<textarea style="width: 0px; height: 0px;"id="clipboardInput" placeholder="Paste data here..." rows="8"></textarea>
 <script>
+
+
+function pasteFromClipboard() {
+  navigator.clipboard.readText()
+    .then(text => {
+      const textarea = document.getElementById('clipboardInput');
+      textarea.value += text + '\n';
+    })
+    .catch(err => {
+      console.error('Failed to read clipboard contents: ', err);
+    });
+const input = document.getElementById("clipboardInput").value.trim();
+  const tableBody = document.querySelector("#statisticsTable tbody");
+
+  // Clear table body for new data
+  tableBody.innerHTML = "";
+
+  // Split input into rows based on double line breaks
+  const items = input.split("\n\n");
+
+  items.forEach(item => {
+    const lines = item.split("\n");
+    if (lines.length > 1) {
+      const name = lines[0].trim(); // Product name
+      const details = lines[1]
+        .replace(/[^0-9.,:]/g, "") // Remove unwanted text
+        .split(","); // Split data by commas
+
+      // Parse details
+      const opening = details[0]?.split(":")[1]?.trim() || "0";
+      const orders = details[1]?.split(":")[1]?.trim() || "0";
+      const closing = details[2]?.split(":")[1]?.trim() || "0";
+      const price = details[3]?.split(":")[1]?.trim() || "0.00";
+      const total = details[4]?.split(":")[1]?.trim() || "0.00";
+       const totalS=parseInt(opening)+parseInt(orders);
+       const saleS= parseInt(totalS)-parseInt(closing);
+
+       
+      // Add a row to the table
+      const row = `
+        <tr>
+          <td>${name}</td>
+          <td>${opening}</td>
+          <td>${orders}</td>
+          <td>${totalS}</td>
+          <td>${closing}</td>
+          <td>${saleS}</td>
+          <td>${price}</td>
+          <td>${total}</td>
+        </tr>
+      `;tableBody.innerHTML += row;
+saveCurrentDateData();
+prevDate();
+nextDate();
+
+document.getElementById('clipboardInput').value='';
+      
+
+    }
+
+  });
+
+}
+
     function shareTable() {
         // Get all rows from the table
         const table = document.getElementById('statisticsTable').getElementsByTagName('tbody')[0];
         const rows = table.getElementsByTagName('tr');
-        let tableData = 'Statistics Table:\n';
+        let tableData = '\nStatistics Table:\n';
 
         // Loop through rows and get the data
         for (let i = 0; i < rows.length; i++) {
             const cells = rows[i].getElementsByTagName('td');
-            const rowData = `${cells[0].innerText} - Opening: ${cells[1].innerText}, Orders: ${cells[2].innerText}, Closing: ${cells[4].innerText}, Price: ${cells[6].innerText}, Total: ${cells[7].innerText}\n`;
+            const rowData = `\n ${cells[0].innerText} \n- Opening: ${cells[1].innerText}, Orders: ${cells[2].innerText}, Closing: ${cells[4].innerText}, Price: ${cells[6].innerText}, Total: ${cells[7].innerText}\n`;
             tableData += rowData;
         }
 
@@ -273,7 +346,8 @@ class="total" colspan="6"><strong >TOTAL:</strong></td>
         const netProfit = document.getElementById('netProfit').innerText;
 
         // Append revenue liabilities and incomes to the message
-        tableData += `\nRevenue and Incomes:\n`;
+        tableData += `\nRevenue and Incomes:\n\n`;
+        tableData += '----\n';
         tableData += `Total Revenue Liabilities: ${revenueLiabilities}\n`;
         tableData += `Total Incomes: ${incomes}\n`;
         tableData += `Net Sales: ${netSales}\n`;
@@ -345,7 +419,6 @@ function loadDateData(date) {
     // Update turnover calculations
     calculateTurnover();
 }
-
 
 
 // Function to add a new item
