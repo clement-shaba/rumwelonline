@@ -496,7 +496,9 @@ function addItemRow(itemData) {
     const totalCell = newRow.insertCell(7);
 
     itemCell.innerText = itemData.item;
+    itemCell.contentEditable = true;
     openingStockCell.innerText = itemData.openingStock;
+    openingStockCell.contentEditable = true;
     ordersCell.contentEditable = true;
     closingStockCell.contentEditable = true;
     priceCell.contentEditable = true;
